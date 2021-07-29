@@ -6,10 +6,12 @@ import ProductDetail from "pages/ProductDetail";
 import ProductRecent from "pages/ProductRecent";
 import Header from "components/common/Header";
 
+import styled from "styled-components";
+
 class Routes extends Component {
   render() {
     return (
-      <>
+      <Container>
         <Router>
           <Header />
           <Switch>
@@ -20,9 +22,16 @@ class Routes extends Component {
             <Route path="*" render={() => <Redirect to="/productlist" />} />
           </Switch>
         </Router>
-      </>
+      </Container>
     );
   }
 }
+
+const Container = styled.div`
+  width: 500px;
+  margin: 0 auto;
+  background-color: ${({ theme }) => theme.color.background};
+  /* border: 1px solid ${({ theme }) => theme.color.borderline}; */
+`;
 
 export default Routes;
