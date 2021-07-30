@@ -2,12 +2,26 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 class WaringModal extends Component {
-  render() {
-    const { isShow, isShowWarningPopup } = this.props;
+  constructor() {
+    super();
 
+    this.wrapperRef = React.createRef();
+  }
+
+  handleClickOutSide = (e) => {
+    const { isShowWarningPopup } = this.props;
+    if (this.wrapperRef && this.wrapperRef.current.contains(e.target)) {
+      isShowWarningPopup(false);
+    }
+  };
+
+  render() {
+    const { isShow } = this.props;
     return (
-      <Overlay isShow={isShow} onClick={() => isShowWarningPopup(false)}>
-        <p>관심 없는 상품이므로 상세 페이지로 이동할 수 없습니다.</p>
+      <Overlay ref={this.wrapperRef} isShow={isShow} onClick={this.handleClickOutSide}>
+        <div>
+          <p>관심 없는 상품이므로 상세 페이지로 이동할 수 없습니다.</p>
+        </div>
       </Overlay>
     );
   }
@@ -15,11 +29,20 @@ class WaringModal extends Component {
 
 const Overlay = styled.div`
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: ${({ isShow }) => (isShow ? "block" : "none")};
-  inset: 0;
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  /* overflow: hidden; */
   background-color: rgba(0, 0, 0 0.4);
 
-  p {
+  span {
+    color: white;
+    background-color: red;
+    padding: 10px;
   }
 `;
 

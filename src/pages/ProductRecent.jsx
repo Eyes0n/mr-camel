@@ -7,11 +7,78 @@ import WaringModal from "components/WaringModal";
 import BrandFilter from "components/productRecent/BrandFilter";
 import DisLikeFilter from "components/productRecent/DisLikeFilter";
 import CheckboxGroup from "components/productRecent/CheckboxGroup";
+import SortBtn from "components/productRecent/SortBtn";
+import Button from "components/common/Button";
 
 class ProductRecent extends Component {
   state = {
     warning: false,
+    showSort: false,
     products: [
+      {
+        id: "prod1",
+        title: "중고 나이키 테아 흰검 245 30000원",
+        brand: "나이키",
+        price: 30000,
+        disLike: true,
+        visitedDate: "1",
+      },
+      {
+        id: "prod2",
+        title: "거의새것 정품 구찌 보스턴백 토트백",
+        brand: "구찌",
+        price: 380000,
+        disLike: true,
+        visitedDate: "2",
+      },
+      {
+        id: "prod3",
+        title: "중고 스톤아일랜드 쉐도우와팬 봄니트 95",
+        brand: "스톤아일랜드",
+        price: 350000,
+        disLike: false,
+        visitedDate: "3",
+      },
+      {
+        id: "prod4",
+        title: "나이키 윈드러너 블랙 L",
+        brand: "나이키",
+        price: 60000,
+        disLike: false,
+        visitedDate: "4",
+      },
+      {
+        id: "prod5",
+        title: "나이키바람막이",
+        brand: "나이키",
+        price: 68000,
+        disLike: false,
+        visitedDate: "5",
+      },
+      {
+        id: "prod6",
+        title: "구찌 정품 카드지갑 (급처)",
+        brand: "구찌",
+        price: 100000,
+        disLike: false,
+        visitedDate: "6",
+      },
+      {
+        id: "prod7",
+        title: "나이키 트레이닝 바람막이",
+        brand: "나이키",
+        price: 75000,
+        disLike: false,
+        visitedDate: "7",
+      },
+      {
+        id: "prod8",
+        title: "구찌 정품 스니커즈 운동화",
+        brand: "구찌",
+        price: 120000,
+        disLike: false,
+        visitedDate: "8",
+      },
       {
         id: "prod1",
         title: "중고 나이키 테아 흰검 245 30000원",
@@ -155,11 +222,29 @@ class ProductRecent extends Component {
       ...prev,
       products: sortedState,
     }));
+
+    this.toggleSortOpen();
+  };
+
+  toggleSortOpen = () => {
+    this.setState((prev) => ({
+      ...prev,
+      showSort: !prev.showSort,
+    }));
   };
 
   render() {
-    const { products, warning, disLike, brand, brandFilter, showBrandFilter, showDisLikeFilter } =
-      this.state;
+    const {
+      products,
+      warning,
+      showSort,
+      disLike,
+      brand,
+      brandFilter,
+      showBrandFilter,
+      showDisLikeFilter,
+    } = this.state;
+
     return (
       <Wrapper>
         <h3>오늘 본 상품 리스트 👀</h3>
@@ -179,23 +264,26 @@ class ProductRecent extends Component {
             (p) => brandFilter.includes(p.brand) && (showDisLikeFilter ? p.disLike === false : p)
           )
           .map((product, i) => (
-            <ProductItem key={`prod${i}`} product={product} disLike={disLike} />
+            <ProductItem
+              key={`prod${i}`}
+              product={product}
+              disLike={disLike}
+              isShowWarningPopup={this.isShowWarningPopup}
+            />
           ))}
         <WaringModal isShow={warning} isShowWarningPopup={this.isShowWarningPopup} />
-        <SortBtn onClick={this.handleSort}>
-          <button id={"recent"} type="button">
-            최신 조회 순
-          </button>
-          <button id={"low"} type="button">
-            낮은 가격 순
-          </button>
-        </SortBtn>
+        <SortBtnWrapper onClick={this.toggleSortOpen}>
+          <Button value={"정렬"} />
+        </SortBtnWrapper>
+        {showSort && <SortBtn handleSort={this.handleSort} />}
       </Wrapper>
     );
   }
 }
 
 const Wrapper = styled.div`
+  position: relative;
+  min-height: 700px;
   margin: 0 20px;
 
   h3 {
@@ -219,6 +307,11 @@ const Wrapper = styled.div`
   }
 `;
 
-export default ProductRecent;
+const SortBtnWrapper = styled.div`
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+`;
 
-const SortBtn = styled.div``;
+export default ProductRecent;
