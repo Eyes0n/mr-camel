@@ -4,7 +4,7 @@ export default function getProductData(path) {
     title: decodeURI(path[3]),
     brand: decodeURI(path[4]),
     price: path[5],
-    disLike: path[6],
+    disLike: Boolean(+path[6]),
     visitedDate: new Date(),
   };
 }
