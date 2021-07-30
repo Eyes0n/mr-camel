@@ -30,7 +30,9 @@ class CheckboxGroup extends Component {
               if (e.target.checked) {
                 onChange([...filter, name]);
               } else {
-                onChange(filter.filter((opt) => opt !== name));
+                filter.length === brand.length
+                  ? onChange([name])
+                  : onChange(filter.filter((opt) => opt !== name));
               }
             }}
           />
