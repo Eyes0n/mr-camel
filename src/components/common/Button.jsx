@@ -4,9 +4,10 @@ import { darken } from "polished";
 
 class Button extends Component {
   render() {
-    const { svg = null, value, size = "small", color, onClick } = this.props;
+    const { svg = null, value, size = "small", color, handleClick } = this.props;
+
     return (
-      <StyledButton size={size} color={color} onClick={onClick}>
+      <StyledButton size={size} color={color} onClick={() => handleClick()}>
         {svg && <img src={svg} alt="" />}
         {value}
       </StyledButton>
