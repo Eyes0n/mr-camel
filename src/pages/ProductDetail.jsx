@@ -1,32 +1,36 @@
-import ProductImage from "components/productDetail/ProductImage";
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
+import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
 
 class ProductDetail extends Component {
+  componentDidMount() {}
   render() {
-    const { product } = this.props;
+    const product = window.location.pathname.split("/");
+    const [title, brand, price] = [decodeURI(product[3]), decodeURI(product[4]), product[5]];
 
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
         <ProductImage />
-        {/* title, brand, price props로 가져오는 작업 필요, 우선 더미로 스타일링만 작업했음 */}
+
         <div className="product-info">
-          <h4>{product.title}</h4>
+          <h4>{title}</h4>
           <div>
-            <span>{product.brand}</span>
-            <span>{product.price}</span>
+            <span>{brand}</span>
+            <span>{price}</span>
           </div>
         </div>
         <div className="button-group">
           <Button svg={close} value="관심없음" size="large" color="blue" />
           <Button svg={refresh} value="랜덤상품 조회" size="large" />
         </div>
-        <h5 className="moveto-productlist">오늘 본 상품 리스트 보러가기👀</h5>
+        <Link to={`/recentlist`}>
+          <h5 className="moveto-productlist">오늘 본 상품 리스트 보러가기👀</h5>
+        </Link>
       </Wrapper>
     );
   }

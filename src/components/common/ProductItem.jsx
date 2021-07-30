@@ -1,25 +1,26 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
-
+import history from "../../usehistory";
 class ProductItem extends Component {
   render() {
     const {
-      product: { title, brand, price },
+      product: { title, brand, price, id, disLike, visitedDate },
     } = this.props;
+    const handleClick = (disLike) => {
+      if (!disLike) return;
+      history.push(`/productdetail/${id}/${title}/${brand}/${price}/${visitedDate}`);
+    };
 
     return (
       <Wrapper>
-        <Link to="/productdetail">
-          <div className="item-wrapper">
-            <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
-            <div>
-              <span>{brand}</span>
-              <span>{price}원</span>
-            </div>
+        <div className="item-wrapper" onClick={() => handleClick(disLike)}>
+          <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
+          <div>
+            <span>{brand}</span>
+            <span>{price}원</span>
           </div>
-        </Link>
+        </div>
       </Wrapper>
     );
   }
