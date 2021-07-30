@@ -3,7 +3,7 @@ export const Theme = {
     background: "#F5F5F5",
     borderline: "#C4C4C4",
     font: "#352A2A",
-    badge: "#2831F1",
+    badge: "#112bda",
     white: "#FFFCFC",
   },
 };
