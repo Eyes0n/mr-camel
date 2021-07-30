@@ -6,31 +6,22 @@ import ProductDetail from "pages/ProductDetail";
 import ProductRecent from "pages/ProductRecent";
 import Header from "components/common/Header";
 
-import styled from "styled-components";
-
+import history from "./usehistory";
 class Routes extends Component {
   render() {
     return (
-      <Container>
-        <Router>
-          <Header />
-          <Switch>
-            <Redirect exact path="/" to="/productlist" />
-            <Route path="/productlist" component={ProductList} />
-            <Route path="/productdetail" component={ProductDetail} />
-            <Route path="/recentlist" component={ProductRecent} />
-            <Route path="*" render={() => <Redirect to="/productlist" />} />
-          </Switch>
-        </Router>
-      </Container>
+      <Router history={history}>
+        <Header />
+        <Switch>
+          <Redirect exact path="/" to="/productlist" />
+          <Route path="/productlist" component={ProductList} />
+          <Route path="/productdetail/:id" component={ProductDetail} />
+          <Route path="/recentlist" component={ProductRecent} />
+          <Route path="*" render={() => <Redirect to="/productlist" />} />
+        </Switch>
+      </Router>
     );
   }
 }
-
-const Container = styled.div`
-  width: 500px;
-  margin: 0 auto;
-  background-color: ${({ theme }) => theme.color.background};
-`;
 
 export default Routes;
