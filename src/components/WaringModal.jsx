@@ -5,7 +5,6 @@ class WaringModal extends Component {
   render() {
     const { isShow, isShowWarningPopup } = this.props;
 
-    console.log(isShow);
     return (
       <Overlay isShow={isShow} onClick={() => isShowWarningPopup(false)}>
         <p>관심 없는 상품이므로 상세 페이지로 이동할 수 없습니다.</p>

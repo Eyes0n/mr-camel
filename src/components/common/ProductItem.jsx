@@ -1,25 +1,27 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
+import Button from "./Button";
 
 class ProductItem extends Component {
   render() {
     const {
-      product: { title, brand, price },
+      product: { title, brand, price, disLike },
+      isShowWarningPopup,
     } = this.props;
 
     return (
-      <Wrapper>
-        <Link to="/productdetail">
-          <div className="item-wrapper">
+      <Wrapper onClick={disLike ? () => isShowWarningPopup(true) : null}>
+        <div className="item-wrapper">
+          <div className="item-title">
             <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
-            <div>
-              <span>{brand}</span>
-              <span>{price}원</span>
-            </div>
+            {disLike && <Button value={"관심 없음"} size="small" color={"blue"} />}
           </div>
-        </Link>
+          <div>
+            <span>{brand}</span>
+            <span>{price}원</span>
+          </div>
+        </div>
       </Wrapper>
     );
   }
@@ -34,9 +36,13 @@ const Wrapper = styled.div`
     margin-bottom: 6px;
     color: ${({ theme }) => theme.color.font};
 
-    h4 {
-      font-weight: 600;
-      margin-bottom: 6px;
+    .item-title {
+      display: flex;
+
+      h4 {
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
     }
 
     div {
