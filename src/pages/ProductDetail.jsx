@@ -19,6 +19,7 @@ class ProductDetail extends Component {
         visitedDate: new Date(),
       },
     ],
+    allProducts: this.props.location.state.allProducts,
   };
 
   componentDidMount() {
@@ -36,16 +37,19 @@ class ProductDetail extends Component {
     setProducts(newData);
   }
 
+  handleDisLikeClick() {
+    const products = getProducts();
+    const currentData = products[products.length - 1];
+    currentData.disLike = true;
+    products.splice(products.length - 1, 1, currentData);
+    setProducts(products);
+  }
+
+  handleRandomClick() {}
+
   render() {
     const { title, brand, price } = this.state.product[0];
-    const handleDisLikeClick = () => {
-      const products = getProducts();
-      const currentData = products[products.length - 1];
-      currentData.disLike = true;
-      products.splice(products.length - 1, 1, currentData);
-      setProducts(products);
-    };
-    const handleRandomClick = () => {};
+
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
@@ -64,13 +68,13 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            handleClick={handleDisLikeClick}
+            handleClick={this.handleDisLikeClick.bind(this)}
           />
           <Button
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            handleClick={() => handleRandomClick()}
+            handleClick={this.handleRandomClick.bind(this)}
           />
         </div>
         <Link to={`/recentlist`}>

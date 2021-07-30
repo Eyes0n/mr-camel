@@ -31,7 +31,7 @@ class ProductList extends Component {
       <Wrapper>
         <h3>이런 매물은 어때요?🤗</h3>
         {products?.map((product, i) => (
-          <ProductItem key={`prod${i}`} product={product} />
+          <ProductItem key={`prod${i}`} product={product} products={products} />
         ))}
       </Wrapper>
     );

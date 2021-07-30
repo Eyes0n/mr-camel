@@ -25,7 +25,6 @@ class ProductRecent extends Component {
       <Wrapper>
         <h3>오늘 본 상품 리스트👀</h3>
         <div className="filter-btn">
-          {/* 컴포넌트 분리 작업 필요 */}
           <button>
             <img src={selector} alt="브랜드 선택하기 버튼" />
             <span>브랜드 선택하기</span>
