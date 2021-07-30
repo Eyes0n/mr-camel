@@ -9,21 +9,16 @@ import refresh from "assets/svg/refresh.svg";
 import { getProducts, setProducts } from "utils/localStorage";
 import history from "../usehistory";
 
+import getProductData from "utils/getProductData";
 class ProductDetail extends Component {
-  product = window.location.pathname.split("/");
-  state = {
-    product: [
-      {
-        id: decodeURI(this.product[2]),
-        title: decodeURI(this.product[3]),
-        brand: decodeURI(this.product[4]),
-        price: this.product[5],
-        disLike: Boolean(+this.product[6]),
-        visitedDate: new Date(),
-      },
-    ],
-    allProducts: this.props.location.state.allProducts,
-  };
+  constructor(props) {
+    super(props);
+    this.path = window.location.pathname.split("/");
+    this.state = {
+      product: [getProductData(this.path)],
+      allProducts: this.props.location.state.allProducts,
+    };
+  }
 
   componentDidMount() {
     const products = getProducts();
@@ -49,22 +44,15 @@ class ProductDetail extends Component {
   };
 
   handleRandomClick = () => {
-    const path = window.location.pathname.split("/");
-
-    let idx = Math.floor(Math.random() * (this.state.allProducts.length - 1));
+    const allProducts = this.state.allProducts;
+    let randomNum = Math.floor(Math.random() * (allProducts.length - 1));
+    const { title, brand, price, disLike } = allProducts[randomNum];
 
     history.push({
-      pathname: `/productdetail/prod${idx}/${this.state.allProducts[idx].title}/${this.state.allProducts[idx].brand}/${this.state.allProducts[idx].price}/${this.state.allProducts[idx].disLike}/${this.state.allProducts[idx].visitedDate}`,
-      state: { allProducts: this.state.allProducts },
+      pathname: `/productdetail/prod${randomNum}/${title}/${brand}/${price}/${disLike}`,
+      state: { allProducts },
     });
-
-    const productData = {
-      title: decodeURI(path[3]),
-      brand: decodeURI(path[4]),
-      price: path[5],
-      disLike: path[6],
-      visitedDate: new Date(),
-    };
+    const productData = getProductData(this.path);
 
     this.setState({
       product: productData,

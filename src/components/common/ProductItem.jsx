@@ -6,14 +6,14 @@ import history from "../../usehistory";
 class ProductItem extends Component {
   render() {
     const {
-      product: { title, brand, price, id, disLike, visitedDate },
+      product: { title, brand, price, id, disLike },
       products,
     } = this.props;
 
     const handleItemClick = (disLike) => {
       if (disLike) return alert("관심없는 상품이에요"); //추후 모달로 구현?
       history.push({
-        pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}/${visitedDate}`,
+        pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}`,
         state: { allProducts: products },
       });
     };
