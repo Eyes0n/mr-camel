@@ -4,27 +4,32 @@ import { darken } from "polished";
 import history from "../../usehistory";
 
 class ProductItem extends Component {
+  constructor(props) {
+    super(props);
+    this.product = this.props.product;
+    this.allProducts = this.props.allProducts;
+    this.title = this.product.title;
+    this.brand = this.product.brand;
+    this.price = this.product.price;
+    this.id = this.product.id;
+    this.disLike = this.product.disLike;
+  }
+
+  handleItemClick = () => {
+    if (this.disLike) return alert("관심없는 상품이에요"); //추후 모달로 구현?
+    history.push({
+      pathname: `/productdetail/${this.id}/${this.title}/${this.brand}/${this.price}/${this.disLike}`,
+      state: { allProducts: this.allProducts },
+    });
+  };
   render() {
-    const {
-      product: { title, brand, price, id, disLike },
-      products,
-    } = this.props;
-
-    const handleItemClick = (disLike) => {
-      if (disLike) return alert("관심없는 상품이에요"); //추후 모달로 구현?
-      history.push({
-        pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}`,
-        state: { allProducts: products },
-      });
-    };
-
     return (
       <Wrapper>
-        <div className="item-wrapper" onClick={() => handleItemClick(disLike)}>
-          <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
+        <div className="item-wrapper" onClick={() => this.handleItemClick(this.disLike)}>
+          <h4>{this.title.length > 25 ? this.title.substring(0, 25).concat("...") : this.title}</h4>
           <div>
-            <span>{brand}</span>
-            <span>{price}원</span>
+            <span>{this.brand}</span>
+            <span>{this.price}원</span>
           </div>
         </div>
       </Wrapper>

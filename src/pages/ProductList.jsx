@@ -5,7 +5,7 @@ import ProductItem from "components/common/ProductItem";
 
 class ProductList extends Component {
   state = {
-    products: [],
+    allProducts: [],
   };
 
   async componentDidMount() {
@@ -20,18 +20,18 @@ class ProductList extends Component {
     });
 
     this.setState({
-      products: editedProductData,
+      allProducts: editedProductData,
     });
   }
 
   render() {
-    const { products } = this.state;
+    const { allProducts } = this.state;
 
     return (
       <Wrapper>
         <h3>이런 매물은 어때요?🤗</h3>
-        {products?.map((product, i) => (
-          <ProductItem key={`prod${i}`} product={product} products={products} />
+        {allProducts?.map((product, i) => (
+          <ProductItem key={`prod${i}`} {...{ product, allProducts }} />
         ))}
       </Wrapper>
     );
