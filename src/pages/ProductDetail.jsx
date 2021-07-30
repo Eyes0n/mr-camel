@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
 import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
 import { getProducts, setProducts } from "utils/localStorage";
+import history from "../usehistory";
+
 class ProductDetail extends Component {
   product = window.location.pathname.split("/");
   state = {
@@ -37,15 +40,36 @@ class ProductDetail extends Component {
     setProducts(newData);
   }
 
-  handleDisLikeClick() {
+  handleDisLikeClick = () => {
     const products = getProducts();
     const currentData = products[products.length - 1];
     currentData.disLike = true;
     products.splice(products.length - 1, 1, currentData);
     setProducts(products);
-  }
+  };
 
-  handleRandomClick() {}
+  handleRandomClick = () => {
+    const path = window.location.pathname.split("/");
+
+    let idx = Math.floor(Math.random() * (this.state.allProducts.length - 1));
+
+    history.push({
+      pathname: `/productdetail/prod${idx}/${this.state.allProducts[idx].title}/${this.state.allProducts[idx].brand}/${this.state.allProducts[idx].price}/${this.state.allProducts[idx].disLike}/${this.state.allProducts[idx].visitedDate}`,
+      state: { allProducts: this.state.allProducts },
+    });
+
+    const productData = {
+      title: decodeURI(path[3]),
+      brand: decodeURI(path[4]),
+      price: path[5],
+      disLike: path[6],
+      visitedDate: new Date(),
+    };
+
+    this.setState({
+      product: productData,
+    });
+  };
 
   render() {
     const { title, brand, price } = this.state.product[0];
@@ -68,13 +92,13 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            handleClick={this.handleDisLikeClick.bind(this)}
+            onClick={this.handleDisLikeClick}
           />
           <Button
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            handleClick={this.handleRandomClick.bind(this)}
+            onClick={this.handleRandomClick}
           />
         </div>
         <Link to={`/recentlist`}>
