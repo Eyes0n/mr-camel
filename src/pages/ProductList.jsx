@@ -14,9 +14,8 @@ class ProductList extends Component {
     const productData = await getProductJsonData();
     const editedProductData = productData.map((item, idx) => {
       item.id = `prod${idx}`;
-      item.disLike = false;
+      item.disLike = 0;
       item.visitedDate = "";
-
       return item;
     });
 

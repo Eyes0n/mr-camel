@@ -15,7 +15,7 @@ class ProductDetail extends Component {
         title: decodeURI(this.product[3]),
         brand: decodeURI(this.product[4]),
         price: this.product[5],
-        disLike: this.product[6],
+        disLike: Boolean(+this.product[6]),
         visitedDate: new Date(),
       },
     ],
@@ -35,14 +35,14 @@ class ProductDetail extends Component {
     localStorage.setItem("visitedItem", JSON.stringify(newData));
   }
 
-  componentDidUpdate() {}
-
   render() {
     const { title, brand, price } = this.state.product[0];
     const handleDisLikeClick = () => {
-      // const products = JSON.parse(localStorage.getItem("visitedItem"));
-      // products.pop();
-      // localStorage.setItem("visitedItem", JSON.stringify(products));
+      const products = JSON.parse(localStorage.getItem("visitedItem"));
+      const currentData = products[products.length - 1];
+      currentData.disLike = true;
+      products.splice(products.length - 1, 1, currentData);
+      localStorage.setItem("visitedItem", JSON.stringify(products));
     };
     const handleRandomClick = () => {};
     return (
@@ -63,13 +63,13 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            onClick={handleDisLikeClick}
+            handleClick={handleDisLikeClick}
           />
           <Button
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            onClick={() => handleRandomClick()}
+            handleClick={() => handleRandomClick()}
           />
         </div>
         <Link to={`/recentlist`}>
