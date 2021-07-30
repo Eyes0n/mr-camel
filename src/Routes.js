@@ -31,7 +31,6 @@ const Container = styled.div`
   width: 500px;
   margin: 0 auto;
   background-color: ${({ theme }) => theme.color.background};
-  /* border: 1px solid ${({ theme }) => theme.color.borderline}; */
 `;
 
 export default Routes;
