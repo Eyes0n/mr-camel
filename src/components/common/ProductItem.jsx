@@ -2,17 +2,25 @@ import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
 import history from "../../usehistory";
+
 class ProductItem extends Component {
   render() {
     const {
       product: { title, brand, price, id, disLike, visitedDate },
+      products,
     } = this.props;
+
     const handleItemClick = (disLike) => {
       if (disLike) {
         return alert("관심없는 상품이에요");
       }
       //추후 모달로 구현?
-      history.push(`/productdetail/${id}/${title}/${brand}/${price}/${disLike}/${visitedDate}`);
+      // history.push(`/productdetail/${id}/${title}/${brand}/${price}/${disLike}/${visitedDate}`);
+
+      history.push({
+        pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}/${visitedDate}`,
+        state: { allProducts: products },
+      });
     };
 
     return (

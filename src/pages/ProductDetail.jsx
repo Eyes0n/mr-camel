@@ -1,19 +1,23 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
 import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
+import history from "../usehistory";
 
 class ProductDetail extends Component {
   state = {
-    product: [{ title: "" }],
+    product: {},
+    allProducts: this.props.location.state.allProducts,
   };
 
   componentDidMount() {
     localStorage.setItem("visitedItem", JSON.stringify(this.state));
     const path = window.location.pathname.split("/");
+
     const productData = {
       title: decodeURI(path[3]),
       brand: decodeURI(path[4]),
@@ -21,13 +25,42 @@ class ProductDetail extends Component {
       disLike: path[6],
       visitedDate: new Date(),
     };
+
     const product = JSON.parse(localStorage.getItem("visitedItem"));
-    debugger;
+
+    this.setState({
+      product: productData,
+    });
+
+    // debugger;
     // const newData = product.concat(productData);
     // localStorage.setItem("visitedItem", JSON.stringify(newData));
   }
 
   componentDidUpdate() {}
+
+  handleRandomClick = () => {
+    const path = window.location.pathname.split("/");
+
+    let idx = Math.floor(Math.random() * (this.state.allProducts.length - 1));
+
+    history.push({
+      pathname: `/productdetail/prod${idx}/${this.state.allProducts[idx].title}/${this.state.allProducts[idx].brand}/${this.state.allProducts[idx].price}/${this.state.allProducts[idx].disLike}/${this.state.allProducts[idx].visitedDate}`,
+      state: { allProducts: this.state.allProducts },
+    });
+
+    const productData = {
+      title: decodeURI(path[3]),
+      brand: decodeURI(path[4]),
+      price: path[5],
+      disLike: path[6],
+      visitedDate: new Date(),
+    };
+
+    this.setState({
+      product: productData,
+    });
+  };
 
   render() {
     const { title, brand, price } = this.state.product;
@@ -35,7 +68,9 @@ class ProductDetail extends Component {
       // const product = localStorage.getItem("visitedItem");
       // localStorage.setItem("visitedItem", JSON.stringify(this.state));
     };
-    const handleRandomClick = () => {};
+
+    const { lists } = this.props;
+
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
@@ -60,7 +95,7 @@ class ProductDetail extends Component {
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            onClick={() => handleRandomClick()}
+            onClick={this.handleRandomClick}
           />
         </div>
         <Link to={`/recentlist`}>
