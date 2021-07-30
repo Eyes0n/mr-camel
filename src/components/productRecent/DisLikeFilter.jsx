@@ -7,9 +7,9 @@ class DisLikeFilter extends Component {
     const { show, onClick } = this.props;
 
     return (
-      <button>
+      <button onClick={() => onClick()}>
         <img src={show ? hide : empty} alt="관심없는 상품 숨기기 버튼" />
-        <span onClick={() => onClick()}>관심없는 상품 숨기기</span>
+        <span>관심없는 상품 숨기기</span>
       </button>
     );
   }
