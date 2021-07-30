@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import { getJsonData } from "utils/fetchData";
+import { getProductJsonData } from "utils/fetchData";
 import ProductItem from "components/common/ProductItem";
 
 import selector from "assets/svg/selector.svg";
@@ -13,7 +13,8 @@ class ProductRecent extends Component {
   };
 
   async componentDidMount() {
-    const data = await getJsonData();
+    const data = await getProductJsonData();
+
     this.setState({
       products: data,
     });

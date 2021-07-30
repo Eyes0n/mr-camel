@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { getJsonData } from "utils/fetchData";
+import { getProductJsonData } from "utils/fetchData";
 
 import ProductItem from "components/common/ProductItem";
 
@@ -10,18 +10,29 @@ class ProductList extends Component {
   };
 
   async componentDidMount() {
-    const data = await getJsonData();
+    const productData = await getProductJsonData();
+
+    const editedProductData = productData.map((item, idx) => {
+      item.id = `prod${idx}`;
+      item.disLike = false;
+      item.visitedDate = "";
+
+      return item;
+    });
+
     this.setState({
-      products: data,
+      products: editedProductData,
     });
   }
+
   render() {
     const { products } = this.state;
+
     return (
       <Wrapper>
         <h3>이런 매물은 어때요?🤗</h3>
         {products?.map((product, i) => (
-          <ProductItem key={`prod${i}`} {...product} />
+          <ProductItem key={`prod${i}`} product={product} />
         ))}
       </Wrapper>
     );

@@ -5,7 +5,9 @@ import { darken } from "polished";
 
 class ProductItem extends Component {
   render() {
-    const { title, brand, price } = this.props;
+    const {
+      product: { title, brand, price },
+    } = this.props;
 
     return (
       <Wrapper>
