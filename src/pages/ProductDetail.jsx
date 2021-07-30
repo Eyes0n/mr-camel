@@ -53,7 +53,6 @@ class ProductDetail extends Component {
       state: { allProducts },
     });
     const productData = getProductData(this.path);
-
     this.setState({
       product: productData,
     });
