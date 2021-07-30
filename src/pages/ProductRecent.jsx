@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 import ProductItem from "components/common/ProductItem";
 
+import WaringModal from "components/WaringModal";
 import BrandFilter from "components/productRecent/BrandFilter";
 import DisLikeFilter from "components/productRecent/DisLikeFilter";
 import CheckboxGroup from "components/productRecent/CheckboxGroup";
-import WaringModal from "components/WaringModal";
 
 class ProductRecent extends Component {
   state = {
@@ -144,6 +144,19 @@ class ProductRecent extends Component {
     }));
   };
 
+  handleSort = (e) => {
+    const { id } = e.target;
+    const { products } = this.state;
+    const sortedState = products.sort((prev, next) =>
+      id === "recent" ? next.visitedDate - prev.visitedDate : prev.price - next.price
+    );
+
+    this.setState((prev) => ({
+      ...prev,
+      products: sortedState,
+    }));
+  };
+
   render() {
     const { products, warning, disLike, brand, brandFilter, showBrandFilter, showDisLikeFilter } =
       this.state;
@@ -169,6 +182,14 @@ class ProductRecent extends Component {
             <ProductItem key={`prod${i}`} product={product} disLike={disLike} />
           ))}
         <WaringModal isShow={warning} isShowWarningPopup={this.isShowWarningPopup} />
+        <SortBtn onClick={this.handleSort}>
+          <button id={"recent"} type="button">
+            최신 조회 순
+          </button>
+          <button id={"low"} type="button">
+            낮은 가격 순
+          </button>
+        </SortBtn>
       </Wrapper>
     );
   }
@@ -199,3 +220,5 @@ const Wrapper = styled.div`
 `;
 
 export default ProductRecent;
+
+const SortBtn = styled.div``;
