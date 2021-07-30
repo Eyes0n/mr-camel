@@ -7,32 +7,31 @@ import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
 
 class ProductDetail extends Component {
+  product = window.location.pathname.split("/");
   state = {
-    product: [{ title: "" }],
+    product: [
+      {
+        title: decodeURI(this.product[3]),
+        brand: decodeURI(this.product[4]),
+        price: this.product[5],
+        disLike: this.product[6],
+        visitedDate: new Date(),
+      },
+    ],
   };
 
   componentDidMount() {
-    localStorage.setItem("visitedItem", JSON.stringify(this.state));
-    const path = window.location.pathname.split("/");
-    const productData = {
-      title: decodeURI(path[3]),
-      brand: decodeURI(path[4]),
-      price: path[5],
-      disLike: path[6],
-      visitedDate: new Date(),
-    };
-    const product = JSON.parse(localStorage.getItem("visitedItem"));
-    debugger;
-    // const newData = product.concat(productData);
-    // localStorage.setItem("visitedItem", JSON.stringify(newData));
+    const products = JSON.parse(localStorage.getItem("visitedItem"));
+    const newData = products.concat(this.state.product[0]);
+    localStorage.setItem("visitedItem", JSON.stringify(newData));
   }
 
   componentDidUpdate() {}
 
   render() {
-    const { title, brand, price } = this.state.product;
+    console.log(this.state.product);
+    const { title, brand, price } = this.state.product[0];
     const handleDisLikeClick = () => {
-      // const product = localStorage.getItem("visitedItem");
       // localStorage.setItem("visitedItem", JSON.stringify(this.state));
     };
     const handleRandomClick = () => {};
@@ -70,7 +69,6 @@ class ProductDetail extends Component {
     );
   }
 }
-
 const Wrapper = styled.div`
   h3 {
     padding: 10px 6px;
