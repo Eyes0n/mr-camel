@@ -7,11 +7,35 @@ import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
 
 class ProductDetail extends Component {
-  componentDidMount() {}
-  render() {
-    const product = window.location.pathname.split("/");
-    const [title, brand, price] = [decodeURI(product[3]), decodeURI(product[4]), product[5]];
+  state = {
+    product: [{ title: "" }],
+  };
 
+  componentDidMount() {
+    localStorage.setItem("visitedItem", JSON.stringify(this.state));
+    const path = window.location.pathname.split("/");
+    const productData = {
+      title: decodeURI(path[3]),
+      brand: decodeURI(path[4]),
+      price: path[5],
+      disLike: path[6],
+      visitedDate: new Date(),
+    };
+    const product = JSON.parse(localStorage.getItem("visitedItem"));
+    debugger;
+    // const newData = product.concat(productData);
+    // localStorage.setItem("visitedItem", JSON.stringify(newData));
+  }
+
+  componentDidUpdate() {}
+
+  render() {
+    const { title, brand, price } = this.state.product;
+    const handleDisLikeClick = () => {
+      // const product = localStorage.getItem("visitedItem");
+      // localStorage.setItem("visitedItem", JSON.stringify(this.state));
+    };
+    const handleRandomClick = () => {};
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
@@ -25,8 +49,19 @@ class ProductDetail extends Component {
           </div>
         </div>
         <div className="button-group">
-          <Button svg={close} value="관심없음" size="large" color="blue" />
-          <Button svg={refresh} value="랜덤상품 조회" size="large" />
+          <Button
+            svg={close}
+            value="관심없음"
+            size="large"
+            color="blue"
+            onClick={() => handleDisLikeClick()}
+          />
+          <Button
+            svg={refresh}
+            value="랜덤상품 조회"
+            size="large"
+            onClick={() => handleRandomClick()}
+          />
         </div>
         <Link to={`/recentlist`}>
           <h5 className="moveto-productlist">오늘 본 상품 리스트 보러가기👀</h5>

@@ -7,14 +7,17 @@ class ProductItem extends Component {
     const {
       product: { title, brand, price, id, disLike, visitedDate },
     } = this.props;
-    const handleClick = (disLike) => {
-      if (!disLike) return;
-      history.push(`/productdetail/${id}/${title}/${brand}/${price}/${visitedDate}`);
+    const handleItemClick = (disLike) => {
+      if (disLike) {
+        return alert("관심없는 상품이에요");
+      }
+      //추후 모달로 구현?
+      history.push(`/productdetail/${id}/${title}/${brand}/${price}/${disLike}/${visitedDate}`);
     };
 
     return (
       <Wrapper>
-        <div className="item-wrapper" onClick={() => handleClick(disLike)}>
+        <div className="item-wrapper" onClick={() => handleItemClick(disLike)}>
           <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
           <div>
             <span>{brand}</span>
