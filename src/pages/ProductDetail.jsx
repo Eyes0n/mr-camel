@@ -23,16 +23,16 @@ class ProductDetail extends Component {
 
   componentDidMount() {
     const products = getProducts();
-    const currentId = this.state.product[0].id;
+    const currentItem = this.state.product[0];
     const isExist = products
       .map((product, index) => {
-        if (product.id === currentId) return index;
+        if (product.id === currentItem.id) return index;
       })
       .filter((el) => {
         if (el !== undefined) return "" + el; //0과 undefined 주의
       });
     if (isExist.length > 0) products.splice(isExist[0], 1); //기존데이터 삭제
-    const newData = products.concat(currentId);
+    const newData = products.concat(currentItem);
     setProducts(newData);
   }
 
