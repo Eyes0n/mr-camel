@@ -4,40 +4,90 @@ import styled from "styled-components";
 import { getProductJsonData } from "utils/fetchData";
 import ProductItem from "components/common/ProductItem";
 
-import selector from "assets/svg/selector.svg";
-import hide from "assets/svg/hide.svg";
+import BrandFilter from "components/productRecent/BrandFilter";
+import DisLikeFilter from "components/productRecent/DisLikeFilter";
+import CheckboxGroup from "components/productRecent/CheckboxGroup";
 
 class ProductRecent extends Component {
   state = {
     products: [],
+    brand: [],
+    brandFilter: [],
+    showBrandFilter: false,
+    showDisLikeFilter: false,
   };
 
   async componentDidMount() {
-    const data = await getProductJsonData();
+    //* 테스트를 위해 전체 데이터 로컬스토리지에 저장
+    const productData = await getProductJsonData();
+    const editedProductData = productData.map((item, idx) => {
+      item.id = `prod${idx}`;
+      idx % 2 === 0 ? (item.disLike = true) : (item.disLike = false);
+      item.visitedDate = "";
+      return item;
+    });
 
     this.setState({
-      products: data,
+      products: editedProductData,
+    });
+
+    localStorage.setItem("visitedItem", JSON.stringify(this.state.products));
+    const visitedItem = JSON.parse(localStorage.getItem("visitedItem"));
+
+    //* 로컬스토리지에 있는 브랜드 리스트 가져오기
+    const myStorageBrand = new Set(visitedItem.map((item) => item.brand));
+    this.setState({
+      brand: [...myStorageBrand],
+      brandFilter: [...myStorageBrand],
     });
   }
+
+  //* 필더에 적용될 브랜드 리스트 셋팅
+  setBrandFilter = (brandList) => {
+    this.setState({
+      brandFilter: brandList,
+    });
+  };
+
+  //* 브랜드 필터를 화면에 보일지/숨길지 토글 설정
+  toggleBrandFilter = () => {
+    this.setState((prev) => ({
+      ...prev,
+      showBrandFilter: !prev.showBrandFilter,
+    }));
+  };
+
+  //* 관심없는 상품 숨기기 토글 설정
+  toggleDisLikeFilter = () => {
+    this.setState((prev) => ({
+      ...prev,
+      showDisLikeFilter: !prev.showDisLikeFilter,
+    }));
+  };
+
   render() {
-    const { products } = this.state;
+    const { products, brand, brandFilter, showBrandFilter, showDisLikeFilter } = this.state;
     return (
       <Wrapper>
         <h3>오늘 본 상품 리스트👀</h3>
         <div className="filter-btn">
-          {/* 컴포넌트 분리 작업 필요 */}
-          <button>
-            <img src={selector} alt="브랜드 선택하기 버튼" />
-            <span>브랜드 선택하기</span>
-          </button>
-          <button>
-            <img src={hide} alt="관심없는 상품 숨기기 버튼" />
-            <span>관심없는 상품 숨기기</span>
-          </button>
+          <BrandFilter onClick={this.toggleBrandFilter} />
+          <DisLikeFilter show={showDisLikeFilter} onClick={this.toggleDisLikeFilter} />
         </div>
-        {products?.map((product, i) => (
-          <ProductItem key={`prod${i}`} {...product} />
-        ))}
+        <CheckboxGroup
+          show={showBrandFilter}
+          brand={brand}
+          filter={brandFilter}
+          onChange={this.setBrandFilter}
+        />
+
+        {products
+          .filter(
+            (p) => brandFilter.includes(p.brand) && (showDisLikeFilter ? p.disLike === false : p)
+          )
+          .map((product, i) => (
+            <ProductItem key={`prod${i}`} product={product} />
+          ))}
       </Wrapper>
     );
   }
