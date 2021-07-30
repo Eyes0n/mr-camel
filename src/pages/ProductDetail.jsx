@@ -11,6 +11,7 @@ class ProductDetail extends Component {
   state = {
     product: [
       {
+        id: decodeURI(this.product[2]),
         title: decodeURI(this.product[3]),
         brand: decodeURI(this.product[4]),
         price: this.product[5],
@@ -22,6 +23,14 @@ class ProductDetail extends Component {
 
   componentDidMount() {
     const products = JSON.parse(localStorage.getItem("visitedItem"));
+    const productIndex = products
+      .map((product, index) => {
+        if (product.id === this.state.product[0].id) return index;
+      })
+      .filter((el) => {
+        if (el !== undefined) return "" + el; //0과 undefined 주의
+      });
+    if (productIndex.length > 0) products.splice(productIndex[0], 1); //기존데이터 삭제
     const newData = products.concat(this.state.product[0]);
     localStorage.setItem("visitedItem", JSON.stringify(newData));
   }
@@ -29,10 +38,11 @@ class ProductDetail extends Component {
   componentDidUpdate() {}
 
   render() {
-    console.log(this.state.product);
     const { title, brand, price } = this.state.product[0];
     const handleDisLikeClick = () => {
-      // localStorage.setItem("visitedItem", JSON.stringify(this.state));
+      // const products = JSON.parse(localStorage.getItem("visitedItem"));
+      // products.pop();
+      // localStorage.setItem("visitedItem", JSON.stringify(products));
     };
     const handleRandomClick = () => {};
     return (
@@ -53,7 +63,7 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            onClick={() => handleDisLikeClick()}
+            onClick={handleDisLikeClick}
           />
           <Button
             svg={refresh}
