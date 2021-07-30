@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { getProductJsonData } from "utils/fetchData";
-
 import ProductItem from "components/common/ProductItem";
 
 class ProductList extends Component {
@@ -10,11 +9,12 @@ class ProductList extends Component {
   };
 
   async componentDidMount() {
+    if (!localStorage.getItem("visitedItem"))
+      localStorage.setItem("visitedItem", JSON.stringify([]));
     const productData = await getProductJsonData();
-
     const editedProductData = productData.map((item, idx) => {
       item.id = `prod${idx}`;
-      item.disLike = true;
+      item.disLike = false;
       item.visitedDate = "";
 
       return item;
