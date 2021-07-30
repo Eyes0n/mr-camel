@@ -5,7 +5,7 @@ import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
-
+import { getProducts, setProducts } from "utils/localStorage";
 class ProductDetail extends Component {
   product = window.location.pathname.split("/");
   state = {
@@ -22,27 +22,28 @@ class ProductDetail extends Component {
   };
 
   componentDidMount() {
-    const products = JSON.parse(localStorage.getItem("visitedItem"));
-    const productIndex = products
+    const products = getProducts();
+    const currentId = this.state.product[0].id;
+    const isExist = products
       .map((product, index) => {
-        if (product.id === this.state.product[0].id) return index;
+        if (product.id === currentId) return index;
       })
       .filter((el) => {
         if (el !== undefined) return "" + el; //0과 undefined 주의
       });
-    if (productIndex.length > 0) products.splice(productIndex[0], 1); //기존데이터 삭제
-    const newData = products.concat(this.state.product[0]);
-    localStorage.setItem("visitedItem", JSON.stringify(newData));
+    if (isExist.length > 0) products.splice(isExist[0], 1); //기존데이터 삭제
+    const newData = products.concat(currentId);
+    setProducts(newData);
   }
 
   render() {
     const { title, brand, price } = this.state.product[0];
     const handleDisLikeClick = () => {
-      const products = JSON.parse(localStorage.getItem("visitedItem"));
+      const products = getProducts();
       const currentData = products[products.length - 1];
       currentData.disLike = true;
       products.splice(products.length - 1, 1, currentData);
-      localStorage.setItem("visitedItem", JSON.stringify(products));
+      setProducts(products);
     };
     const handleRandomClick = () => {};
     return (
