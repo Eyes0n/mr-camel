@@ -8,16 +8,18 @@ import refresh from "assets/svg/refresh.svg";
 
 class ProductDetail extends Component {
   render() {
+    const { product } = this.props;
+
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
         <ProductImage />
         {/* title, brand, price props로 가져오는 작업 필요, 우선 더미로 스타일링만 작업했음 */}
         <div className="product-info">
-          <h4>상품 title</h4>
+          <h4>{product.title}</h4>
           <div>
-            <span>상품 brand</span>
-            <span>상품 price</span>
+            <span>{product.brand}</span>
+            <span>{product.price}</span>
           </div>
         </div>
         <div className="button-group">
