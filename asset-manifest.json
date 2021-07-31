@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.js": "/mr-camel/static/js/main.8c5df577.chunk.js",
+    "main.js.map": "/mr-camel/static/js/main.8c5df577.chunk.js.map",
+    "runtime-main.js": "/mr-camel/static/js/runtime-main.2da0e97b.js",
+    "runtime-main.js.map": "/mr-camel/static/js/runtime-main.2da0e97b.js.map",
+    "static/js/2.37b6ff0b.chunk.js": "/mr-camel/static/js/2.37b6ff0b.chunk.js",
+    "static/js/2.37b6ff0b.chunk.js.map": "/mr-camel/static/js/2.37b6ff0b.chunk.js.map",
+    "index.html": "/mr-camel/index.html",
+    "static/js/2.37b6ff0b.chunk.js.LICENSE.txt": "/mr-camel/static/js/2.37b6ff0b.chunk.js.LICENSE.txt",
+    "static/media/close.8091d786.svg": "/mr-camel/static/media/close.8091d786.svg",
+    "static/media/dummyImg.37ad630d.jpg": "/mr-camel/static/media/dummyImg.37ad630d.jpg",
+    "static/media/empty.f8921dd5.svg": "/mr-camel/static/media/empty.f8921dd5.svg",
+    "static/media/hide.35ff08a6.svg": "/mr-camel/static/media/hide.35ff08a6.svg",
+    "static/media/refresh.f4962cee.svg": "/mr-camel/static/media/refresh.f4962cee.svg",
+    "static/media/selector.65df142d.svg": "/mr-camel/static/media/selector.65df142d.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2da0e97b.js",
+    "static/js/2.37b6ff0b.chunk.js",
+    "static/js/main.8c5df577.chunk.js"
+  ]
+}
