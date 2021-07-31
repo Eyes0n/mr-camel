@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-class WaringModal extends Component {
+class WarningModal extends Component {
   // constructor() {
   //   super();
 
@@ -29,13 +29,16 @@ class WaringModal extends Component {
 }
 
 const Overlay = styled.div`
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 500px;
+  height: 800px;
+  margin: 10px auto;
   background-color: rgba(0, 0, 0, 0.4);
   visibility: ${({ isShow }) => (isShow ? "visible" : "hidden")};
   opacity: ${({ isShow }) => (isShow ? "1" : "0")};
@@ -55,4 +58,4 @@ const RefWrapper = styled.div`
   }
 `;
 
-export default WaringModal;
+export default WarningModal;

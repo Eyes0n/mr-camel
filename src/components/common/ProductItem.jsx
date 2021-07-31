@@ -3,19 +3,9 @@ import styled, { css } from "styled-components";
 import { darken } from "polished";
 import Button from "./Button";
 import history from "../../usehistory";
+import WarningModal from "components/WarningModal";
 
 class ProductItem extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.product = this.props.product;
-  //   this.allProducts = this.props.allProducts;
-  //   this.title = this.product.title;
-  //   this.brand = this.product.brand;
-  //   this.price = this.product.price;
-  //   this.id = this.product.id;
-  //   this.disLike = this.product.disLike;
-  // }
-
   handleItemClick = () => {
     const {
       isShowWarningPopup,
@@ -25,7 +15,7 @@ class ProductItem extends Component {
 
     if (disLike) {
       isShowWarningPopup(true);
-      return alert("관심없는 상품이에요");
+      return;
     }
 
     history.push({
@@ -53,6 +43,7 @@ class ProductItem extends Component {
             </ItemPrice>
           </div>
         </div>
+        <WarningModal />
       </Wrapper>
     );
   }
@@ -62,10 +53,11 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 12px;
   z-index: 1;
+  cursor: pointer;
 
   .item-wrapper {
-    padding: 6px 12px;
-    margin-bottom: 6px;
+    padding: 12px 12px;
+    margin-bottom: 12px;
     color: ${({ theme }) => theme.color.font};
 
     .item-title {
@@ -74,7 +66,7 @@ const Wrapper = styled.div`
 
       h4 {
         font-weight: 600;
-        margin-bottom: 6px;
+        margin-bottom: 15px;
       }
     }
   }
