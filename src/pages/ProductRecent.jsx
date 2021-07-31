@@ -1,21 +1,18 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import moment from "moment";
 import ProductItem from "components/common/ProductItem";
-
 import WaringModal from "components/WarningModal";
 import BrandFilter from "components/productRecent/BrandFilter";
 import DisLikeFilter from "components/productRecent/DisLikeFilter";
 import CheckboxGroup from "components/productRecent/CheckboxGroup";
 import SortBtn from "components/productRecent/SortBtn";
-import Button from "components/common/Button";
-import { clearProducts, getProducts } from "utils/localStorage";
 import Empty from "components/productRecent/Empty";
-import moment from "moment";
+import Button from "components/common/Button";
+import { clearProducts, getProducts, setProducts } from "utils/localStorage";
 
 class ProductRecent extends Component {
   state = {
-    // warning: false,
     showSort: false,
     products: [],
     brand: [],
@@ -25,6 +22,8 @@ class ProductRecent extends Component {
   };
 
   componentDidMount() {
+    if (!getProducts()) setProducts([]);
+
     this.timerID = setInterval(() => this.tick(), 1000);
     const visitedItem = getProducts();
 
@@ -32,8 +31,7 @@ class ProductRecent extends Component {
       products: visitedItem,
     });
 
-    const myStorageBrand =
-      visitedItem.length !== 0 ? new Set(visitedItem.map((item) => item.brand)) : [];
+    const myStorageBrand = new Set(visitedItem.map((item) => item.brand));
 
     this.setState((prev) => ({
       ...prev,
@@ -93,7 +91,6 @@ class ProductRecent extends Component {
         ? new Date(next.visitedDate).getTime() - new Date(prev.visitedDate).getTime()
         : Number(prev.price) - Number(next.price)
     );
-    console.log(sortedState);
 
     this.setState((prev) => ({
       ...prev,
@@ -104,13 +101,10 @@ class ProductRecent extends Component {
   };
 
   toggleSortOpen = () => {
-    this.setState(
-      (prev) => ({
-        ...prev,
-        showSort: !prev.showSort,
-      }),
-      () => console.log(this.state.showSort)
-    );
+    this.setState((prev) => ({
+      ...prev,
+      showSort: !prev.showSort,
+    }));
   };
 
   renderFilteredProducts = () => {
@@ -188,6 +182,7 @@ const Menu = styled.div`
 
     button {
       font-size: 1rem;
+
       img {
         width: 15px;
         margin-right: 6px;

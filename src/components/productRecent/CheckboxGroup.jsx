@@ -5,22 +5,15 @@ import CheckBox from "components/productRecent/CheckBox";
 class CheckboxGroup extends Component {
   render() {
     const { show, brand, filter, onChange } = this.props;
+
     return (
       <Wrapper show={show}>
-        {/* 전체선택 input 체크박스 */}
         <CheckBox
           value="전체"
           checked={filter.length === brand.length}
-          onChange={(e) => {
-            if (e.target.checked) {
-              onChange([...brand]);
-            } else {
-              onChange([]);
-            }
-          }}
+          onChange={(e) => (e.target.checked ? onChange([...brand]) : onChange([]))}
         />
 
-        {/* 브랜드별 input 체크박스 */}
         {brand.map((name, idx) => (
           <CheckBox
             key={`brand${idx}`}

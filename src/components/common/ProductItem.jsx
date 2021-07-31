@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
+import history from "../../history";
 import Button from "./Button";
-import history from "../../usehistory";
 import WarningModal from "components/WarningModal";
 
 class ProductItem extends Component {
@@ -29,11 +29,12 @@ class ProductItem extends Component {
       product: { title, brand, price, disLike },
     } = this.props;
 
+    const titleName = title.length > 25 ? title.substring(0, 25).concat("...") : title;
     return (
       <Wrapper>
         <div className="item-wrapper" onClick={() => this.handleItemClick(disLike)}>
           <div className="item-title">
-            <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
+            <h4>{titleName}</h4>
             {!!disLike && <Button value={"관심 없음"} size="small" color={"blue"} />}
           </div>
           <div>
@@ -50,8 +51,8 @@ class ProductItem extends Component {
 }
 
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.color.white};
   border-radius: 12px;
+  background-color: ${({ theme }) => theme.color.white};
   z-index: 1;
   cursor: pointer;
 
@@ -65,8 +66,8 @@ const Wrapper = styled.div`
       justify-content: space-between;
 
       h4 {
-        font-weight: 600;
         margin-bottom: 15px;
+        font-weight: 600;
       }
     }
   }

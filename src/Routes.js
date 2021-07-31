@@ -6,7 +6,7 @@ import ProductDetail from "pages/ProductDetail";
 import ProductRecent from "pages/ProductRecent";
 import Header from "components/common/Header";
 
-import history from "./usehistory";
+import history from "./history";
 class Routes extends Component {
   render() {
     return (

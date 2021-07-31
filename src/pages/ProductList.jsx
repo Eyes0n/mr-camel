@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { getProductJsonData } from "utils/fetchData";
+import { getProductJsonData } from "utils/getProductJsonData";
 import ProductItem from "components/common/ProductItem";
 import WarningModal from "components/WarningModal";
+import { getProducts, setProducts } from "utils/localStorage";
 
 class ProductList extends Component {
   state = {
@@ -11,8 +12,8 @@ class ProductList extends Component {
   };
 
   async componentDidMount() {
-    if (!localStorage.getItem("visitedItem"))
-      localStorage.setItem("visitedItem", JSON.stringify([]));
+    if (!getProducts()) setProducts([]);
+
     const productData = await getProductJsonData();
     const editedProductData = productData.map((item, idx) => {
       item.id = `prod${idx}`;

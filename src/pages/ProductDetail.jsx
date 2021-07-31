@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
 import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
+import getProductData from "utils/getProductDetailData";
+import { getProducts, setProducts } from "utils/localStorage";
+import history from "../history";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
-import { getProducts, setProducts } from "utils/localStorage";
-import history from "../usehistory";
-
-import getProductData from "utils/getProductData";
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -18,23 +16,21 @@ class ProductDetail extends Component {
     this.path = window.location.pathname.split("/");
 
     this.state = {
-      product: [getProductData(this.path)],
-      allProducts: this.props.location.state.allProducts,
+      product: getProductData(this.path),
+      allProducts: this.props.location.state.allProducts || [],
     };
   }
 
   componentDidMount() {
-    const products = getProducts();
-    const currentItem = this.state.product[0];
-    const isExist = products
-      .map((product, index) => {
-        if (product.id === currentItem.id) return index;
-      })
-      .filter((el) => {
-        if (el !== undefined) return `${el}`; //0과 undefined 주의
-      });
+    if (!getProducts()) setProducts([]);
 
-    if (isExist.length > 0) products.splice(isExist[0], 1); //기존데이터 삭제
+    const products = getProducts();
+    const currentItem = this.state.product;
+    const isExist = products
+      .map((product, index) => (product.id === currentItem?.id ? index : undefined))
+      .filter((el) => (el !== undefined ? `${el}` : null));
+
+    if (isExist.length > 0) products.splice(isExist[0], 1);
     const newData = products.concat(currentItem);
     setProducts(newData);
   }
@@ -42,9 +38,7 @@ class ProductDetail extends Component {
   handleDisLikeClick = () => {
     const products = getProducts();
     const currentData = products[products.length - 1];
-
     currentData.disLike = true;
-
     products.splice(products.length - 1, 1, currentData);
     setProducts(products);
 
@@ -53,7 +47,7 @@ class ProductDetail extends Component {
 
   handleRandomClick = () => {
     const { allProducts, product } = this.state;
-    const randomNum = Math.floor(Math.random() * (allProducts.length - 1)); //0-99
+    const randomNum = Math.floor(Math.random() * (allProducts.length - 1));
     const { title, brand, price, disLike } = allProducts[randomNum];
 
     if (`prod${randomNum}` === product.id || disLike) return () => this.handleRandomClick();
@@ -70,7 +64,7 @@ class ProductDetail extends Component {
   };
 
   render() {
-    const { title, brand, price } = this.state.product[0];
+    const { title, brand, price } = this.state.product;
 
     return (
       <Wrapper>

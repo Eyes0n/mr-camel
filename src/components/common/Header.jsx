@@ -1,4 +1,3 @@
-import Timer from "components/productRecent/Timer";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -10,7 +9,6 @@ class Header extends Component {
         <Link to="/">
           <h1>Mr.Camel</h1>
         </Link>
-        <Timer />
       </Wrapper>
     );
   }
@@ -27,9 +25,9 @@ const Wrapper = styled.div`
   z-index: 10;
 
   h1 {
-    font-weight: 600;
-    font-size: 1.5rem;
     color: ${({ theme }) => theme.color.font};
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 `;
 

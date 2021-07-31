@@ -14,7 +14,6 @@ class Button extends Component {
   }
 }
 
-//* 버튼 색상 구하기
 const getButtonColor = (color) => {
   switch (color) {
     case "blue":
@@ -45,7 +44,6 @@ const getButtonColor = (color) => {
   }
 };
 
-//* 버튼 크기 구하기
 const getButtonSize = (size) => {
   switch (size) {
     case "large":

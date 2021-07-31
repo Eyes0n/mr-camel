@@ -24,10 +24,10 @@ const Wrapper = styled.label`
     checked ? theme.color.badge : theme.color.borderline};
 
   input[type="checkbox"] {
-    margin: 0;
-    border: 0;
     width: 0;
     height: 0;
+    margin: 0;
+    border: 0;
     -webkit-appearance: none;
   }
 `;

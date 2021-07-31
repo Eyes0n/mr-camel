@@ -2,27 +2,14 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 class WarningModal extends Component {
-  // constructor() {
-  //   super();
-
-  //   this.wrapperRef = React.createRef();
-  // }
-
-  // handleClickOutSide = (e) => {
-  //   const { isShowWarningPopup } = this.props;
-  //   if (!this.wrapperRef.current.contains(e.target)) {
-  //     isShowWarningPopup(false);
-  //   }
-  // };
-
   render() {
     const { isShow, isShowWarningPopup } = this.props;
 
     return (
       <Overlay isShow={isShow} onClick={() => isShowWarningPopup(false)}>
-        <RefWrapper ref={this.wrapperRef}>
+        <TextWrapper>
           <span>관심 없는 상품이므로 상세 페이지로 이동할 수 없습니다.</span>
-        </RefWrapper>
+        </TextWrapper>
       </Overlay>
     );
   }
@@ -46,7 +33,7 @@ const Overlay = styled.div`
   z-index: 1;
 `;
 
-const RefWrapper = styled.div`
+const TextWrapper = styled.div`
   ${({ theme }) => theme.flexSet("center", "center")}
   flex: 1;
   background-color: red;
