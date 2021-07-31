@@ -13,11 +13,11 @@ class Routes extends Component {
       <Router history={history}>
         <Header />
         <Switch>
-          <Redirect exact path="/" to="/productlist" />
-          <Route path="/productlist" component={ProductList} />
+          {/* <Redirect exact path="/" to="/productlist" /> */}
+          <Route exact path="/" component={ProductList} />
           <Route path="/productdetail/:id" component={ProductDetail} />
           <Route path="/recentlist" component={ProductRecent} />
-          <Route path="*" render={() => <Redirect to="/productlist" />} />
+          <Route path="*" render={() => <Redirect to="/" />} />
         </Switch>
       </Router>
     );
