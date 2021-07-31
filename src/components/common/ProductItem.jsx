@@ -1,47 +1,74 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
+import history from "../../history";
+import Button from "./Button";
+import WarningModal from "components/WarningModal";
 
 class ProductItem extends Component {
-  render() {
+  handleItemClick = () => {
     const {
-      product: { title, brand, price },
+      isShowWarningPopup,
+      allProducts,
+      product: { disLike, id, title, brand, price },
     } = this.props;
 
+    if (disLike) {
+      isShowWarningPopup(true);
+      return;
+    }
+
+    history.push({
+      pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}`,
+      state: { allProducts: allProducts },
+    });
+  };
+
+  render() {
+    const {
+      product: { title, brand, price, disLike },
+    } = this.props;
+
+    const titleName = title.length > 25 ? title.substring(0, 25).concat("...") : title;
     return (
       <Wrapper>
-        <Link to="/productdetail">
-          <div className="item-wrapper">
-            <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
-            <div>
+        <div className="item-wrapper" onClick={() => this.handleItemClick(disLike)}>
+          <div className="item-title">
+            <h4>{titleName}</h4>
+            {!!disLike && <Button value={"관심 없음"} size="small" color={"blue"} />}
+          </div>
+          <div>
+            <ItemPrice>
               <span>{brand}</span>
               <span>{price}원</span>
-            </div>
+            </ItemPrice>
           </div>
-        </Link>
+        </div>
+        <WarningModal />
       </Wrapper>
     );
   }
 }
 
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.color.white};
   border-radius: 12px;
+  background-color: ${({ theme }) => theme.color.white};
+  z-index: 1;
+  cursor: pointer;
 
   .item-wrapper {
-    padding: 6px 12px;
-    margin-bottom: 6px;
+    padding: 12px 12px;
+    margin-bottom: 12px;
     color: ${({ theme }) => theme.color.font};
 
-    h4 {
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    div {
+    .item-title {
       display: flex;
       justify-content: space-between;
+
+      h4 {
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
     }
   }
 
@@ -57,6 +84,11 @@ const Wrapper = styled.div`
         }
       `}
   }
+`;
+
+const ItemPrice = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default ProductItem;

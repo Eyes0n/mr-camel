@@ -1,43 +1,112 @@
-import ProductImage from "components/productDetail/ProductImage";
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
+import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
+import getProductData from "utils/getProductDetailData";
+import { getProducts, setProducts } from "utils/localStorage";
+import history from "../history";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
 
 class ProductDetail extends Component {
+  constructor(props) {
+    super(props);
+
+    this.path = window.location.pathname.split("/");
+
+    this.state = {
+      product: getProductData(this.path),
+      allProducts: this.props.location.state.allProducts || [],
+    };
+  }
+
+  componentDidMount() {
+    if (!getProducts()) setProducts([]);
+
+    const products = getProducts();
+    const currentItem = this.state.product;
+    const isExist = products
+      .map((product, index) => (product.id === currentItem?.id ? index : undefined))
+      .filter((el) => (el !== undefined ? `${el}` : null));
+
+    if (isExist.length > 0) products.splice(isExist[0], 1);
+    const newData = products.concat(currentItem);
+    setProducts(newData);
+  }
+
+  handleDisLikeClick = () => {
+    const products = getProducts();
+    const currentData = products[products.length - 1];
+    currentData.disLike = true;
+    products.splice(products.length - 1, 1, currentData);
+    setProducts(products);
+
+    this.handleRandomClick();
+  };
+
+  handleRandomClick = () => {
+    const { allProducts, product } = this.state;
+    const randomNum = Math.floor(Math.random() * (allProducts.length - 1));
+    const { title, brand, price, disLike } = allProducts[randomNum];
+
+    if (`prod${randomNum}` === product.id || disLike) return () => this.handleRandomClick();
+
+    history.push({
+      pathname: `/productdetail/prod${randomNum}/${title}/${brand}/${price}/${disLike}`,
+      state: { allProducts },
+    });
+
+    const productData = getProductData(this.path);
+    this.setState({
+      product: productData,
+    });
+  };
+
   render() {
-    const { product } = this.props;
+    const { title, brand, price } = this.state.product;
 
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
         <ProductImage />
-        {/* title, brand, price props로 가져오는 작업 필요, 우선 더미로 스타일링만 작업했음 */}
+
         <div className="product-info">
-          <h4>{product.title}</h4>
+          <h4>{title}</h4>
           <div>
-            <span>{product.brand}</span>
-            <span>{product.price}</span>
+            <span>{brand}</span>
+            <span>{price}</span>
           </div>
         </div>
         <div className="button-group">
-          <Button svg={close} value="관심없음" size="large" color="blue" />
-          <Button svg={refresh} value="랜덤상품 조회" size="large" />
+          <Button
+            svg={close}
+            value="관심없음"
+            size="large"
+            color="blue"
+            onClick={this.handleDisLikeClick}
+          />
+          <Button
+            svg={refresh}
+            value="랜덤상품 조회"
+            size="large"
+            onClick={this.handleRandomClick}
+          />
         </div>
-        <h5 className="moveto-productlist">오늘 본 상품 리스트 보러가기👀</h5>
+        <Link to={`/recentlist`}>
+          <h5 className="moveto-productlist">오늘 본 상품 리스트 보러가기 👀</h5>
+        </Link>
       </Wrapper>
     );
   }
 }
-
 const Wrapper = styled.div`
   h3 {
     padding: 10px 6px;
     font-weight: 600;
     font-size: 1.25rem;
   }
+
   .product-info {
     padding: 12px 12px 0 12px;
 
@@ -51,6 +120,7 @@ const Wrapper = styled.div`
       display: flex;
       justify-content: space-between;
     }
+
     &:after {
       content: "";
       display: block;

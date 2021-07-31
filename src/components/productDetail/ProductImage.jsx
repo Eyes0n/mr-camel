@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-
 import DummyImg from "assets/img/dummyImg.jpg";
 
 class ProductImage extends Component {
