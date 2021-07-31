@@ -1,23 +1,22 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import GlobalStyles from "styles/GlobalStyles";
-import { ThemeProvider } from "styled-components";
 import { Theme } from "styles/Theme";
-
-import Routes from "Routes";
 import Mixin from "styles/Mixin";
+import Routes from "Routes";
+import ErrorBoundary from "utils/ErrorBoundary";
 
 class App extends Component {
   render() {
     return (
-      <>
+      <ErrorBoundary>
         <GlobalStyles />
         <ThemeProvider theme={{ ...Theme, ...Mixin }}>
           <Container>
             <Routes />
           </Container>
         </ThemeProvider>
-      </>
+      </ErrorBoundary>
     );
   }
 }
