@@ -16,7 +16,7 @@ class ProductItem extends Component {
   }
 
   handleItemClick = () => {
-    if (this.disLike) return alert("관심없는 상품이에요"); //추후 모달로 구현?
+    if (this.disLike) return alert("관심없는 상품이에요");
     history.push({
       pathname: `/productdetail/${this.id}/${this.title}/${this.brand}/${this.price}/${this.disLike}`,
       state: { allProducts: this.allProducts },

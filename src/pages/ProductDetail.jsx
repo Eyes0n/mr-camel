@@ -45,13 +45,16 @@ class ProductDetail extends Component {
 
   handleRandomClick = () => {
     const allProducts = this.state.allProducts;
-    let randomNum = Math.floor(Math.random() * (allProducts.length - 1));
+    let randomNum = Math.floor(Math.random() * (allProducts.length - 1)); //0-99
     const { title, brand, price, disLike } = allProducts[randomNum];
+
+    if ("prod" + randomNum === this.state.product.id || disLike) return this.handleRandomClick();
 
     history.push({
       pathname: `/productdetail/prod${randomNum}/${title}/${brand}/${price}/${disLike}`,
       state: { allProducts },
     });
+
     const productData = getProductData(this.path);
     this.setState({
       product: productData,
