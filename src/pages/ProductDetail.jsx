@@ -47,6 +47,8 @@ class ProductDetail extends Component {
 
     products.splice(products.length - 1, 1, currentData);
     setProducts(products);
+
+    this.handleRandomClick();
   };
 
   handleRandomClick = () => {
