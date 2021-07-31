@@ -1,6 +1,6 @@
 # 프리온보딩코스 미스터카멜 기업 과제
 
-[🔗 배포 링크](https://optimistic-leakey-16a8a8.netlify.app/)
+## [🔗 배포 링크](https://optimistic-leakey-16a8a8.netlify.app/)
 
 ### 주요 기능 영상
 
