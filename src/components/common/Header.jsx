@@ -17,10 +17,14 @@ class Header extends Component {
 }
 
 const Wrapper = styled.div`
+  position: fixed;
   display: flex;
   justify-content: space-between;
+  width: 498px;
   padding: 20px;
+  background-color: ${({ theme }) => theme.color.background};
   box-shadow: rgba(0, 0, 0, 0.08) 0 4px 2px -2px;
+  z-index: 10;
 
   h1 {
     font-weight: 600;
