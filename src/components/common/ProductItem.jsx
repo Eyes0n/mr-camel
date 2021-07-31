@@ -30,6 +30,7 @@ class ProductItem extends Component {
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 12px;
+  z-index: 1;
 
   .item-wrapper {
     padding: 6px 12px;
