@@ -1,35 +1,56 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
+import Button from "./Button";
 import history from "../../usehistory";
 
 class ProductItem extends Component {
-  constructor(props) {
-    super(props);
-    this.product = this.props.product;
-    this.allProducts = this.props.allProducts;
-    this.title = this.product.title;
-    this.brand = this.product.brand;
-    this.price = this.product.price;
-    this.id = this.product.id;
-    this.disLike = this.product.disLike;
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.product = this.props.product;
+  //   this.allProducts = this.props.allProducts;
+  //   this.title = this.product.title;
+  //   this.brand = this.product.brand;
+  //   this.price = this.product.price;
+  //   this.id = this.product.id;
+  //   this.disLike = this.product.disLike;
+  // }
 
   handleItemClick = () => {
-    if (this.disLike) return alert("관심없는 상품이에요");
+    const {
+      isShowWarningPopup,
+      allProducts,
+      product: { disLike, id, title, brand, price },
+    } = this.props;
+
+    if (disLike) {
+      isShowWarningPopup(true);
+      return alert("관심없는 상품이에요");
+    }
+
     history.push({
-      pathname: `/productdetail/${this.id}/${this.title}/${this.brand}/${this.price}/${this.disLike}`,
-      state: { allProducts: this.allProducts },
+      pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}`,
+      state: { allProducts: allProducts },
     });
   };
+
   render() {
+    const {
+      product: { title, brand, price, disLike },
+    } = this.props;
+
     return (
       <Wrapper>
-        <div className="item-wrapper" onClick={() => this.handleItemClick(this.disLike)}>
-          <h4>{this.title.length > 25 ? this.title.substring(0, 25).concat("...") : this.title}</h4>
+        <div className="item-wrapper" onClick={() => this.handleItemClick(disLike)}>
+          <div className="item-title">
+            <h4>{title.length > 25 ? title.substring(0, 25).concat("...") : title}</h4>
+            {!!disLike && <Button value={"관심 없음"} size="small" color={"blue"} />}
+          </div>
           <div>
-            <span>{this.brand}</span>
-            <span>{this.price}원</span>
+            <ItemPrice>
+              <span>{brand}</span>
+              <span>{price}원</span>
+            </ItemPrice>
           </div>
         </div>
       </Wrapper>
@@ -40,20 +61,21 @@ class ProductItem extends Component {
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 12px;
+  z-index: 1;
 
   .item-wrapper {
     padding: 6px 12px;
     margin-bottom: 6px;
     color: ${({ theme }) => theme.color.font};
 
-    h4 {
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    div {
+    .item-title {
       display: flex;
       justify-content: space-between;
+
+      h4 {
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
     }
   }
 
@@ -69,6 +91,11 @@ const Wrapper = styled.div`
         }
       `}
   }
+`;
+
+const ItemPrice = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default ProductItem;
