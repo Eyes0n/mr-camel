@@ -17,6 +17,10 @@ class ProductList extends Component {
   //   warning: false,
   // };
 
+  componentDidMount() {
+    console.log("this.state.allProducts", this.state.allProducts);
+  }
+
   isShowWarningPopup = (bool) => {
     bool
       ? this.setState((prev) => ({ ...prev, warning: true }))

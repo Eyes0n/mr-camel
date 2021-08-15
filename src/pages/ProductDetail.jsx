@@ -81,7 +81,7 @@ class ProductDetail extends Component {
   }
 }
 
-ProductDetail.contextType = ProductsContext;
+// ProductDetail.contextType = ProductsContext;
 
 export default ProductDetail;
 
