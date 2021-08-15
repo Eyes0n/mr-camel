@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import GlobalStyles from "styles/GlobalStyles";
 import { Theme } from "styles/Theme";
@@ -8,10 +8,17 @@ import ErrorBoundary from "utils/ErrorBoundary";
 import { getProductJsonData } from "utils/getProductJsonData";
 
 export const ProductsContext = React.createContext(
-  [] // 기본값
+  [
+    {
+      id: 1,
+      title: "title",
+      brand: "brand",
+      price: 1,
+    },
+  ] // 기본값
 );
 
-class App extends Component {
+class App extends PureComponent {
   constructor() {
     super();
 
@@ -41,7 +48,6 @@ class App extends Component {
 
   render() {
     const { allProducts } = this.state;
-    console.log("app allProducts", allProducts);
     return (
       // <ErrorBoundary>
       <>
@@ -59,7 +65,9 @@ class App extends Component {
   }
 }
 
-export default React.memo(App);
+// App.contextType = ProductsContext;
+
+export default App;
 
 const Container = styled.div`
   width: 500px;

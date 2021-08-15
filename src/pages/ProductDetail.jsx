@@ -3,68 +3,48 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
-import getProductData from "utils/getProductDetailData";
-import { getProducts, setProducts } from "utils/localStorage";
-import history from "../history";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
+import { ProductsContext } from "App";
 
 class ProductDetail extends Component {
   constructor(props) {
     super(props);
 
-    this.path = window.location.pathname.split("/");
-
     this.state = {
-      product: getProductData(this.path),
-      allProducts: this.props.location.state.allProducts || [],
+      product: {
+        brand: "",
+        title: "",
+        price: "",
+      },
     };
   }
 
   componentDidMount() {
-    if (!getProducts()) setProducts([]);
+    const { match } = this.props;
+    const { allProducts } = this.context;
 
-    const products = getProducts();
-    const currentItem = this.state.product;
-    const isExist = products
-      .map((product, index) => (product.id === currentItem?.id ? index : undefined))
-      .filter((el) => (el !== undefined ? `${el}` : null));
-
-    if (isExist.length > 0) products.splice(isExist[0], 1);
-    const newData = products.concat(currentItem);
-    setProducts(newData);
+    console.log("allProducts", allProducts);
+    console.log(`match`, match);
+    const nextProduct = allProducts.filter((product) => product.id === match.params.id);
+    this.setState({
+      product: nextProduct,
+    });
   }
 
-  handleDisLikeClick = () => {
-    const products = getProducts();
-    const currentData = products[products.length - 1];
-    currentData.disLike = true;
-    products.splice(products.length - 1, 1, currentData);
-    setProducts(products);
+  // 제가 하고 싶은거 전역 관리로 전체 상품 데이터 공유하고
+  // url :  /:id 로 만들어준 다음
+  // id에 따라 기능 동작하게 수정하고 픔
 
-    this.handleRandomClick();
-  };
+  handleDisLikeClick = (allProducts) => {};
 
-  handleRandomClick = () => {
-    const { allProducts, product } = this.state;
-    const randomNum = Math.floor(Math.random() * (allProducts.length - 1));
-    const { title, brand, price, disLike } = allProducts[randomNum];
-
-    if (`prod${randomNum}` === product.id || disLike) return () => this.handleRandomClick();
-
-    history.push({
-      pathname: `/productdetail/prod${randomNum}/${title}/${brand}/${price}/${disLike}`,
-      state: { allProducts },
-    });
-
-    const productData = getProductData(this.path);
-    this.setState({
-      product: productData,
-    });
-  };
+  handleRandomClick = (allProducts) => {};
 
   render() {
     const { title, brand, price } = this.state.product;
+    const { match, allProducts } = this.props;
+    console.log("this.context.allProducts", this.context.allProducts);
+    console.log(`this.props.match.params`, match.params);
 
     return (
       <Wrapper>
@@ -84,13 +64,13 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            onClick={this.handleDisLikeClick}
+            onClick={() => this.handleDisLikeClick(allProducts)}
           />
           <Button
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            onClick={this.handleRandomClick}
+            onClick={() => this.handleRandomClick(allProducts)}
           />
         </div>
         <Link to={`/recentlist`}>
@@ -100,6 +80,11 @@ class ProductDetail extends Component {
     );
   }
 }
+
+ProductDetail.contextType = ProductsContext;
+
+export default ProductDetail;
+
 const Wrapper = styled.div`
   h3 {
     padding: 10px 6px;
@@ -155,5 +140,3 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-export default ProductDetail;
