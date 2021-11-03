@@ -5,67 +5,26 @@ import { Theme } from "styles/Theme";
 import Mixin from "styles/Mixin";
 import Routes from "Routes";
 import ErrorBoundary from "utils/ErrorBoundary";
-import { getProductJsonData } from "utils/getProductJsonData";
-
-export const ProductsContext = React.createContext(
-  [
-    {
-      id: 1,
-      title: "title",
-      brand: "brand",
-      price: 1,
-    },
-  ] // 기본값
-);
+import ProductsContext from "context/ProductsContext";
 
 class App extends PureComponent {
-  constructor() {
-    super();
-
-    this.state = {
-      allProducts: [],
-    };
-  }
-
-  componentDidMount() {
-    const requestProducts = async () => {
-      const productJson = await getProductJsonData();
-
-      const editedProductData = productJson.map((item, idx) => {
-        item.id = idx;
-        item.disLike = 0;
-        item.visitedDate = "";
-        return item;
-      });
-
-      this.setState({
-        allProducts: editedProductData,
-      });
-    };
-
-    requestProducts();
-  }
-
   render() {
-    const { allProducts } = this.state;
     return (
       // <ErrorBoundary>
       <>
         <GlobalStyles />
         <ThemeProvider theme={{ ...Theme, ...Mixin }}>
-          <ProductsContext.Provider value={allProducts}>
+          <ProductsContext>
             <Container>
               <Routes />
             </Container>
-          </ProductsContext.Provider>
+          </ProductsContext>
         </ThemeProvider>
       </>
       // </ErrorBoundary>
     );
   }
 }
-
-// App.contextType = ProductsContext;
 
 export default App;
 

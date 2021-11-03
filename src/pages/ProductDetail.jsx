@@ -5,52 +5,43 @@ import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
-import { ProductsContext } from "App";
+import { AllProductsContext } from "context/ProductsContext";
 
 class ProductDetail extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      product: {
-        brand: "",
-        title: "",
-        price: "",
-      },
+      product: {},
     };
   }
 
+  static contextType = AllProductsContext;
+
   componentDidMount() {
     const { match } = this.props;
-    const { allProducts } = this.context;
+    const allProducts = this.context;
 
-    console.log("allProducts", allProducts);
-    console.log(`match`, match);
-    const nextProduct = allProducts.filter((product) => product.id === match.params.id);
     this.setState({
-      product: nextProduct,
+      product: allProducts[match.params.id],
     });
   }
 
-  // 제가 하고 싶은거 전역 관리로 전체 상품 데이터 공유하고
-  // url :  /:id 로 만들어준 다음
-  // id에 따라 기능 동작하게 수정하고 픔
+  //TODO: contextAPI로 전체 상품 데이터 관리되게 함
+  //TODO: 관심없음 클릭 시 랜덤 상품 출력 기능 구현
+  //TODO: 싫어요 클릭 시 랜덤 상품 출력 기능 구현
 
-  handleDisLikeClick = (allProducts) => {};
+  handleDisLikeClick = () => {};
 
-  handleRandomClick = (allProducts) => {};
+  handleRandomClick = () => {};
 
   render() {
     const { title, brand, price } = this.state.product;
-    const { match, allProducts } = this.props;
-    console.log("this.context.allProducts", this.context.allProducts);
-    console.log(`this.props.match.params`, match.params);
 
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
         <ProductImage />
-
         <div className="product-info">
           <h4>{title}</h4>
           <div>
@@ -64,13 +55,13 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            onClick={() => this.handleDisLikeClick(allProducts)}
+            onClick={() => this.handleDisLikeClick()}
           />
           <Button
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            onClick={() => this.handleRandomClick(allProducts)}
+            onClick={() => this.handleRandomClick()}
           />
         </div>
         <Link to={`/recentlist`}>
@@ -80,8 +71,6 @@ class ProductDetail extends Component {
     );
   }
 }
-
-// ProductDetail.contextType = ProductsContext;
 
 export default ProductDetail;
 
