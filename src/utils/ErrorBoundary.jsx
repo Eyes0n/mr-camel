@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import history from "../history";
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class ErrorBoundary extends Component {
 
   componentDidCatch = (error, info) => {
     this.setState({ error: error, errorInfo: info });
-    this.props.history.push("/productList");
+    history.push("/productList");
   };
 
   render() {
@@ -26,4 +26,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default withRouter(ErrorBoundary);
+export default ErrorBoundary;

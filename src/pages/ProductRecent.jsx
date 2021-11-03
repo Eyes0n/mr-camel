@@ -14,7 +14,7 @@ import { clearProducts, getProducts, setProducts } from "utils/localStorage";
 class ProductRecent extends Component {
   state = {
     showSort: false,
-    visitedProducts: [],
+    products: [],
     brand: [],
     brandFilter: [],
     showBrandFilter: false,
@@ -111,9 +111,9 @@ class ProductRecent extends Component {
     const { products, brandFilter, showDisLikeFilter, disLike } = this.state;
     return products
       .filter((p) => brandFilter.includes(p.brand) && (showDisLikeFilter ? p.disLike === false : p))
-      .map((product) => (
+      .map((product, i) => (
         <ProductItem
-          key={product.id}
+          key={`prod${i}`}
           product={product}
           disLike={disLike}
           isShowWarningPopup={this.isShowWarningPopup}
