@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
+import history from "../../history";
 import Button from "./Button";
 import WarningModal from "components/WarningModal";
-import { withRouter } from "react-router-dom";
 
 class ProductItem extends Component {
   handleItemClick = () => {
     const {
       isShowWarningPopup,
-      product: { disLike, id },
+      allProducts,
+      product: { disLike, id, title, brand, price },
     } = this.props;
 
     if (disLike) {
@@ -17,9 +18,10 @@ class ProductItem extends Component {
       return;
     }
 
-    // TODO: `/productdetail/${id}` 로 리펙토링하기 근데 범위가 넓다. 천천히 해야할듯...
-    // this.props.history.push(`/productdetail/${id}/${title}/${brand}/${price}/${disLike}`);
-    this.props.history.push(`/productdetail/${id}`);
+    history.push({
+      pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}`,
+      state: { allProducts: allProducts },
+    });
   };
 
   render() {
@@ -89,4 +91,4 @@ const ItemPrice = styled.div`
   justify-content: space-between;
 `;
 
-export default withRouter(ProductItem);
+export default ProductItem;
