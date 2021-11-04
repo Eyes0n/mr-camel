@@ -72,6 +72,7 @@ class ProductDetail extends Component {
   }
 }
 
+// ProductDetail.contextType = AllProductsContext;
 export default ProductDetail;
 
 const Wrapper = styled.div`
