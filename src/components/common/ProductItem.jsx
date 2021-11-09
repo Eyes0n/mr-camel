@@ -13,12 +13,10 @@ class ProductItem extends Component {
     } = this.props;
 
     if (disLike) {
-      isShowWarningPopup(true);
+      isShowWarningPopup();
       return;
     }
 
-    // TODO: `/productdetail/${id}` 로 리펙토링하기 근데 범위가 넓다. 천천히 해야할듯...
-    // this.props.history.push(`/productdetail/${id}/${title}/${brand}/${price}/${disLike}`);
     this.props.history.push(`/productdetail/${id}`);
   };
 

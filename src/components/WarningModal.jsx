@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 class WarningModal extends Component {
   render() {
-    const { isShow, isShowWarningPopup } = this.props;
+    const { isShow, isShowWarningPopup: closeWarningPopup } = this.props;
 
     return (
-      <Overlay isShow={isShow} onClick={() => isShowWarningPopup(false)}>
+      <Overlay isShow={isShow} onClick={() => closeWarningPopup()}>
         <TextWrapper>
           <span>관심 없는 상품이므로 상세 페이지로 이동할 수 없습니다.</span>
         </TextWrapper>
