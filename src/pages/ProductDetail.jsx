@@ -45,10 +45,16 @@ class ProductDetail extends Component {
     );
   }
 
-  //TODO: 싫어요 클릭 시 랜덤 상품 출력 기능 구현
-  handleDisLikeClick = () => {};
+  handleDisLikeClick = () => {
+    const products = getVisitedProducts();
+    const currentData = products[products.length - 1];
+    currentData.disLike = true;
+    products.splice(products.length - 1, 1, currentData);
+    setVisitedProducts(products);
 
-  //TODO: 관심없음 클릭 시 랜덤 상품 출력 기능 구현
+    this.handleRandomClick();
+  };
+
   handleRandomClick = () => {
     const { product } = this.state;
     const allProducts = this.context;
