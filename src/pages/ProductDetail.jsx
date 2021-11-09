@@ -6,6 +6,7 @@ import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
 import { AllProductsContext } from "context/ProductsContext";
+import { getVisitedProducts, setVisitedProducts } from "utils/localStorage";
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -18,26 +19,60 @@ class ProductDetail extends Component {
 
   static contextType = AllProductsContext;
 
+  setVisitedItemToStorage = () => {
+    if (!getVisitedProducts()) setVisitedProducts([]);
+
+    const visitedProducts = getVisitedProducts();
+    const currentItem = { ...this.state.product, visitedDate: new Date() };
+    const isExist = visitedProducts
+      .map((product, index) => (product.id === currentItem?.id ? index : undefined))
+      .filter((el) => (el !== undefined ? `${el}` : null));
+
+    if (isExist.length > 0) visitedProducts.splice(isExist[0], 1);
+    const newData = visitedProducts.concat(currentItem);
+    setVisitedProducts(newData);
+  };
+
   componentDidMount() {
     const { match } = this.props;
     const allProducts = this.context;
 
-    this.setState({
-      product: allProducts[match.params.id],
-    });
+    this.setState(
+      {
+        product: allProducts[match.params.id],
+      },
+      () => this.setVisitedItemToStorage()
+    );
   }
 
-  //TODO: contextAPI로 전체 상품 데이터 관리되게 함
-  //TODO: 관심없음 클릭 시 랜덤 상품 출력 기능 구현
   //TODO: 싫어요 클릭 시 랜덤 상품 출력 기능 구현
-
   handleDisLikeClick = () => {};
 
-  handleRandomClick = () => {};
+  //TODO: 관심없음 클릭 시 랜덤 상품 출력 기능 구현
+  handleRandomClick = () => {
+    const { product } = this.state;
+    const allProducts = this.context;
+    const randomNum = Math.floor(Math.random() * (allProducts.length - 1));
+    const { disLike } = allProducts[randomNum];
+
+    if (randomNum === product.id || disLike) {
+      this.handleRandomClick();
+    }
+
+    this.setState(
+      {
+        product: allProducts[randomNum],
+      },
+      () => this.setVisitedItemToStorage()
+    );
+
+    this.props.history.push({
+      pathname: `/productdetail/${randomNum}`,
+    });
+  };
 
   render() {
     const { title, brand, price } = this.state.product;
-
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
