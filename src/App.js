@@ -10,18 +10,18 @@ import ProductsContext from "context/ProductsContext";
 class App extends PureComponent {
   render() {
     return (
-      // <ErrorBoundary>
-      <>
-        <GlobalStyles />
-        <ThemeProvider theme={{ ...Theme, ...Mixin }}>
-          <ProductsContext>
-            <Container>
-              <Routes />
-            </Container>
-          </ProductsContext>
-        </ThemeProvider>
-      </>
-      // </ErrorBoundary>
+      <ErrorBoundary>
+        <>
+          <GlobalStyles />
+          <ThemeProvider theme={{ ...Theme, ...Mixin }}>
+            <ProductsContext>
+              <Container>
+                <Routes />
+              </Container>
+            </ProductsContext>
+          </ThemeProvider>
+        </>
+      </ErrorBoundary>
     );
   }
 }
