@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
-import history from "../../history";
 import Button from "./Button";
 import WarningModal from "components/WarningModal";
 
@@ -9,19 +8,15 @@ class ProductItem extends Component {
   handleItemClick = () => {
     const {
       isShowWarningPopup,
-      allProducts,
-      product: { disLike, id, title, brand, price },
+      product: { disLike, id },
     } = this.props;
 
     if (disLike) {
-      isShowWarningPopup(true);
+      isShowWarningPopup();
       return;
     }
 
-    history.push({
-      pathname: `/productdetail/${id}/${title}/${brand}/${price}/${disLike}`,
-      state: { allProducts: allProducts },
-    });
+    this.props.history.push(`/productdetail/${id}`);
   };
 
   render() {

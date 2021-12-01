@@ -9,7 +9,7 @@ import CheckboxGroup from "components/productRecent/CheckboxGroup";
 import SortBtn from "components/productRecent/SortBtn";
 import Empty from "components/productRecent/Empty";
 import Button from "components/common/Button";
-import { clearProducts, getProducts, setProducts } from "utils/localStorage";
+import { clearVisitedProducts, getVisitedProducts, setVisitedProducts } from "utils/localStorage";
 
 class ProductRecent extends Component {
   state = {
@@ -22,11 +22,10 @@ class ProductRecent extends Component {
   };
 
   componentDidMount() {
-    if (!getProducts()) setProducts([]);
+    if (!getVisitedProducts()) setVisitedProducts([]);
 
     this.timerID = setInterval(() => this.tick(), 1000);
-    const visitedItem = getProducts();
-
+    const visitedItem = getVisitedProducts();
     this.setState({
       products: visitedItem,
     });
@@ -50,7 +49,7 @@ class ProductRecent extends Component {
 
     nowTime = moment().format("HH:mm:ss");
     if (nowTime === midnight) {
-      clearProducts();
+      clearVisitedProducts();
       this.setState({
         products: [],
       });
@@ -110,7 +109,10 @@ class ProductRecent extends Component {
   renderFilteredProducts = () => {
     const { products, brandFilter, showDisLikeFilter, disLike } = this.state;
     return products
-      .filter((p) => brandFilter.includes(p.brand) && (showDisLikeFilter ? p.disLike === false : p))
+      .filter(
+        (p) =>
+          brandFilter.includes(p.brand) && (showDisLikeFilter ? Boolean(p.disLike) === false : p)
+      )
       .map((product, i) => (
         <ProductItem
           key={`prod${i}`}
@@ -122,11 +124,10 @@ class ProductRecent extends Component {
   };
 
   render() {
-    const { warning, showSort, brand, brandFilter, showBrandFilter, showDisLikeFilter } =
+    const { products, warning, showSort, brand, brandFilter, showBrandFilter, showDisLikeFilter } =
       this.state;
 
-    const result = this.renderFilteredProducts();
-
+    const filteredProducts = this.renderFilteredProducts();
     return (
       <Wrapper>
         <Menu>
@@ -142,9 +143,7 @@ class ProductRecent extends Component {
             onChange={this.setBrandFilter}
           />
         </Menu>
-        <ProductsWrapper>
-          {!!result.length ? this.renderFilteredProducts() : <Empty />}
-        </ProductsWrapper>
+        <ProductsWrapper>{!!products.length ? filteredProducts : <Empty />}</ProductsWrapper>
         <WaringModal isShow={warning} isShowWarningPopup={this.isShowWarningPopup} />
 
         <SortContainer>
@@ -205,4 +204,5 @@ const SortContainer = styled.div`
 const SortBtnWrapper = styled.div`
   position: relative;
 `;
+
 export default ProductRecent;

@@ -1,58 +1,47 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { getProductJsonData } from "utils/getProductJsonData";
 import ProductItem from "components/common/ProductItem";
 import WarningModal from "components/WarningModal";
-import { getProducts, setProducts } from "utils/localStorage";
+import { AllProductsContext } from "context/ProductsContext";
 
 class ProductList extends Component {
-  state = {
-    warning: false,
-    allProducts: [],
-  };
-
-  async componentDidMount() {
-    if (!getProducts()) setProducts([]);
-
-    const productData = await getProductJsonData();
-    const editedProductData = productData.map((item, idx) => {
-      item.id = `prod${idx}`;
-      item.disLike = 0;
-      item.visitedDate = "";
-      return item;
-    });
-
-    this.setState({
-      allProducts: editedProductData,
-    });
+  constructor(props) {
+    super(props);
+    this.state = {
+      warning: false,
+    };
   }
 
-  isShowWarningPopup = (bool) => {
-    bool
-      ? this.setState((prev) => ({ ...prev, warning: true }))
-      : this.setState((prev) => ({ ...prev, warning: false }));
+  isShowWarningPopup = () => {
+    this.setState((prev) => ({ warning: !prev.warning }));
   };
 
   render() {
-    const { allProducts, warning } = this.state;
+    const { warning } = this.state;
 
     return (
-      <Wrapper>
-        <h3>이런 매물은 어때요?🤗</h3>
-        <div className="product-list">
-          {allProducts?.map((product, i) => (
-            <ProductItem
-              key={`prod${i}`}
-              {...{ product, allProducts }}
-              isShowWarningPopup={this.isShowWarningPopup}
-            />
-          ))}
-        </div>
-        <WarningModal isShow={warning} isShowWarningPopup={this.isShowWarningPopup} />
-      </Wrapper>
+      <AllProductsContext.Consumer>
+        {(allProducts) => (
+          <Wrapper>
+            <h3>이런 매물은 어때요?🤗</h3>
+            <div className="product-list">
+              {allProducts?.map((product, i) => (
+                <ProductItem
+                  key={`product${i}`}
+                  product={product}
+                  isShowWarningPopup={this.isShowWarningPopup}
+                />
+              ))}
+            </div>
+            <WarningModal isShow={warning} isShowWarningPopup={this.isShowWarningPopup} />
+          </Wrapper>
+        )}
+      </AllProductsContext.Consumer>
     );
   }
 }
+
+export default ProductList;
 
 const Wrapper = styled.div`
   margin: 72px 20px 0;
@@ -70,5 +59,3 @@ const Wrapper = styled.div`
     padding-top: 40px;
   }
 `;
-
-export default ProductList;

@@ -3,11 +3,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
-import getProductData from "utils/getProductDetailData";
-import { getProducts, setProducts } from "utils/localStorage";
-import history from "../history";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
+import { AllProductsContext } from "context/ProductsContext";
+import { getVisitedProducts, setVisitedProducts } from "utils/localStorage";
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -16,61 +15,76 @@ class ProductDetail extends Component {
     this.path = window.location.pathname.split("/");
 
     this.state = {
-      product: getProductData(this.path),
-      allProducts: this.props.location.state.allProducts || [],
+      product: {},
     };
   }
 
-  componentDidMount() {
-    if (!getProducts()) setProducts([]);
+  static contextType = AllProductsContext;
 
-    const products = getProducts();
-    const currentItem = this.state.product;
-    const isExist = products
+  setVisitedItemToStorage = () => {
+    if (!getVisitedProducts()) setVisitedProducts([]);
+
+    const visitedProducts = getVisitedProducts();
+    const currentItem = { ...this.state.product, visitedDate: new Date() };
+    const isExist = visitedProducts
       .map((product, index) => (product.id === currentItem?.id ? index : undefined))
       .filter((el) => (el !== undefined ? `${el}` : null));
 
-    if (isExist.length > 0) products.splice(isExist[0], 1);
-    const newData = products.concat(currentItem);
-    setProducts(newData);
+    if (isExist.length > 0) visitedProducts.splice(isExist[0], 1);
+    const newData = visitedProducts.concat(currentItem);
+    setVisitedProducts(newData);
+  };
+
+  componentDidMount() {
+    const { match } = this.props;
+    const allProducts = this.context;
+
+    this.setState(
+      {
+        product: allProducts[match.params.id],
+      },
+      () => this.setVisitedItemToStorage()
+    );
   }
 
   handleDisLikeClick = () => {
-    const products = getProducts();
+    const products = getVisitedProducts();
     const currentData = products[products.length - 1];
     currentData.disLike = true;
     products.splice(products.length - 1, 1, currentData);
-    setProducts(products);
+    setVisitedProducts(products);
 
     this.handleRandomClick();
   };
 
   handleRandomClick = () => {
-    const { allProducts, product } = this.state;
+    const { product } = this.state;
+    const allProducts = this.context;
     const randomNum = Math.floor(Math.random() * (allProducts.length - 1));
-    const { title, brand, price, disLike } = allProducts[randomNum];
+    const { disLike } = allProducts[randomNum];
 
-    if (`prod${randomNum}` === product.id || disLike) return () => this.handleRandomClick();
+    if (randomNum === product.id || disLike) {
+      this.handleRandomClick();
+    }
 
-    history.push({
-      pathname: `/productdetail/prod${randomNum}/${title}/${brand}/${price}/${disLike}`,
-      state: { allProducts },
-    });
+    this.setState(
+      {
+        product: allProducts[randomNum],
+      },
+      () => this.setVisitedItemToStorage()
+    );
 
-    const productData = getProductData(this.path);
-    this.setState({
-      product: productData,
+    this.props.history.push({
+      pathname: `/productdetail/${randomNum}`,
     });
   };
 
   render() {
     const { title, brand, price } = this.state.product;
-
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
         <ProductImage />
-
         <div className="product-info">
           <h4>{title}</h4>
           <div>
@@ -84,13 +98,13 @@ class ProductDetail extends Component {
             value="관심없음"
             size="large"
             color="blue"
-            onClick={this.handleDisLikeClick}
+            onClick={() => this.handleDisLikeClick()}
           />
           <Button
             svg={refresh}
             value="랜덤상품 조회"
             size="large"
-            onClick={this.handleRandomClick}
+            onClick={() => this.handleRandomClick()}
           />
         </div>
         <Link to={`/recentlist`}>
@@ -100,6 +114,10 @@ class ProductDetail extends Component {
     );
   }
 }
+
+// ProductDetail.contextType = AllProductsContext;
+export default ProductDetail;
+
 const Wrapper = styled.div`
   h3 {
     padding: 10px 6px;
@@ -155,5 +173,3 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-export default ProductDetail;

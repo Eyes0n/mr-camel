@@ -1,22 +1,24 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import GlobalStyles from "styles/GlobalStyles";
 import { Theme } from "styles/Theme";
 import Mixin from "styles/Mixin";
 import Routes from "Routes";
-import ErrorBoundary from "utils/ErrorBoundary";
+import ProductsContext from "context/ProductsContext";
 
-class App extends Component {
+class App extends PureComponent {
   render() {
     return (
-      <ErrorBoundary>
+      <>
         <GlobalStyles />
         <ThemeProvider theme={{ ...Theme, ...Mixin }}>
-          <Container>
-            <Routes />
-          </Container>
+          <ProductsContext>
+            <Container>
+              <Routes />
+            </Container>
+          </ProductsContext>
         </ThemeProvider>
-      </ErrorBoundary>
+      </>
     );
   }
 }
