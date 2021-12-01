@@ -1,17 +1,12 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { getProductJsonData } from "utils/getProductJsonData";
 
 export const AllProductsContext = React.createContext([]);
 
-class ProductsContext extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      allProducts: [],
-    };
-  }
+const ProductsContext = ({ children }) => {
+  const [allProducts, setAllProducts] = useState([]);
 
-  componentDidMount() {
+  useEffect(() => {
     const getProducts = async () => {
       const productJson = await getProductJsonData();
 
@@ -22,21 +17,17 @@ class ProductsContext extends Component {
         return item;
       });
 
-      this.setState({
-        allProducts: editedProductData,
-      });
+      setAllProducts(editedProductData);
+      // return editedProductData;
     };
 
+    // getProducts().then((products) => {
+    //   setAllProducts(products);
+    // });
     getProducts();
-  }
-  render() {
-    const { allProducts } = this.state;
-    return (
-      <AllProductsContext.Provider value={allProducts}>
-        {this.props.children}
-      </AllProductsContext.Provider>
-    );
-  }
-}
+  }, []);
+
+  return <AllProductsContext.Provider value={allProducts}>{children}</AllProductsContext.Provider>;
+};
 
 export default ProductsContext;
