@@ -4,24 +4,21 @@ import GlobalStyles from "styles/GlobalStyles";
 import { Theme } from "styles/Theme";
 import Mixin from "styles/Mixin";
 import Routes from "Routes";
-import ErrorBoundary from "utils/ErrorBoundary";
 import ProductsContext from "context/ProductsContext";
 
 class App extends PureComponent {
   render() {
     return (
-      <ErrorBoundary>
-        <>
-          <GlobalStyles />
-          <ThemeProvider theme={{ ...Theme, ...Mixin }}>
-            <ProductsContext>
-              <Container>
-                <Routes />
-              </Container>
-            </ProductsContext>
-          </ThemeProvider>
-        </>
-      </ErrorBoundary>
+      <>
+        <GlobalStyles />
+        <ThemeProvider theme={{ ...Theme, ...Mixin }}>
+          <ProductsContext>
+            <Container>
+              <Routes />
+            </Container>
+          </ProductsContext>
+        </ThemeProvider>
+      </>
     );
   }
 }
