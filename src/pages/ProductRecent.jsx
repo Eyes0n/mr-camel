@@ -113,9 +113,9 @@ class ProductRecent extends Component {
         (p) =>
           brandFilter.includes(p.brand) && (showDisLikeFilter ? Boolean(p.disLike) === false : p)
       )
-      .map((product) => (
+      .map((product, i) => (
         <ProductItem
-          key={product.id}
+          key={`prod${i}`}
           product={product}
           disLike={disLike}
           isShowWarningPopup={this.isShowWarningPopup}

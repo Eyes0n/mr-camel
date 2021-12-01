@@ -12,6 +12,8 @@ class ProductDetail extends Component {
   constructor(props) {
     super(props);
 
+    this.path = window.location.pathname.split("/");
+
     this.state = {
       product: {},
     };
