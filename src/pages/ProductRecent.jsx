@@ -204,4 +204,5 @@ const SortContainer = styled.div`
 const SortBtnWrapper = styled.div`
   position: relative;
 `;
+
 export default ProductRecent;
