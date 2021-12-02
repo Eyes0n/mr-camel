@@ -5,7 +5,7 @@ import ProductImage from "components/productDetail/ProductImage";
 import Button from "components/common/Button";
 import close from "assets/svg/close.svg";
 import refresh from "assets/svg/refresh.svg";
-import { AllProductsContext } from "context/ProductsContext";
+import { AllProductsContext, getProducts } from "context/ProductsContext";
 import { getVisitedProducts, setVisitedProducts } from "utils/localStorage";
 
 class ProductDetail extends Component {
@@ -14,6 +14,7 @@ class ProductDetail extends Component {
 
     this.state = {
       product: {},
+      allProducts: [],
     };
   }
 
@@ -37,12 +38,25 @@ class ProductDetail extends Component {
     const { match } = this.props;
     const allProducts = this.context;
 
-    this.setState(
-      {
-        product: allProducts[match.params.id],
-      },
-      () => this.setVisitedItemToStorage()
-    );
+    if (allProducts.length) {
+      this.setState(
+        {
+          product: allProducts[match.params.id],
+          allProducts,
+        },
+        () => this.setVisitedItemToStorage()
+      );
+    } else {
+      getProducts().then((allProducts) =>
+        this.setState(
+          {
+            product: allProducts[match.params.id],
+            allProducts,
+          },
+          () => this.setVisitedItemToStorage()
+        )
+      );
+    }
   }
 
   handleDisLikeClick = () => {
@@ -56,8 +70,8 @@ class ProductDetail extends Component {
   };
 
   handleRandomClick = () => {
-    const { product } = this.state;
-    const allProducts = this.context;
+    const { product, allProducts } = this.state;
+    // const allProducts = this.context;
     const randomNum = Math.floor(Math.random() * (allProducts.length - 1));
     const { disLike } = allProducts[randomNum];
 
@@ -65,10 +79,15 @@ class ProductDetail extends Component {
       this.handleRandomClick();
     }
 
+    const item = allProducts[randomNum];
+    if (item?.title === undefined) {
+      console.log("id", item.id);
+    }
     this.setState(
-      {
+      (prev) => ({
+        ...prev,
         product: allProducts[randomNum],
-      },
+      }),
       () => this.setVisitedItemToStorage()
     );
 
