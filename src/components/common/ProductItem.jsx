@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { darken } from "polished";
 import Button from "./Button";
 import WarningModal from "components/WarningModal";
+import { withRouter } from "react-router";
 
 class ProductItem extends Component {
   handleItemClick = () => {
@@ -86,4 +87,4 @@ const ItemPrice = styled.div`
   justify-content: space-between;
 `;
 
-export default ProductItem;
+export default withRouter(ProductItem);
