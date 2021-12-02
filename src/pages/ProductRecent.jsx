@@ -19,6 +19,7 @@ class ProductRecent extends Component {
     brandFilter: [],
     showBrandFilter: false,
     showDisLikeFilter: false,
+    warning: false,
   };
 
   componentDidMount() {
@@ -56,10 +57,8 @@ class ProductRecent extends Component {
     }
   }
 
-  isShowWarningPopup = (bool) => {
-    bool
-      ? this.setState((prev) => ({ ...prev, warning: true }))
-      : this.setState((prev) => ({ ...prev, warning: false }));
+  isShowWarningPopup = () => {
+    this.setState((prev) => ({ ...prev, warning: !prev.warning }));
   };
 
   setBrandFilter = (brandList) => {

@@ -12,8 +12,6 @@ class ProductDetail extends Component {
   constructor(props) {
     super(props);
 
-    this.path = window.location.pathname.split("/");
-
     this.state = {
       product: {},
     };
@@ -80,16 +78,16 @@ class ProductDetail extends Component {
   };
 
   render() {
-    const { title, brand, price } = this.state.product;
+    const { product } = this.state;
     return (
       <Wrapper>
         <h3>상품 자세히 보기</h3>
         <ProductImage />
         <div className="product-info">
-          <h4>{title}</h4>
+          <h4>{product?.title}</h4>
           <div>
-            <span>{brand}</span>
-            <span>{price}</span>
+            <span>{product?.brand}</span>
+            <span>{product?.price}</span>
           </div>
         </div>
         <div className="button-group">
