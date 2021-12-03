@@ -26,7 +26,7 @@ class ProductDetail extends Component {
     const visitedProducts = getVisitedProducts();
     const currentItem = { ...this.state.product, visitedDate: new Date() };
     const isExist = visitedProducts
-      .map((product, index) => (product.id === currentItem?.id ? index : undefined))
+      .map((product, index) => (product.id === currentItem.id ? index : undefined))
       .filter((el) => (el !== undefined ? `${el}` : null));
 
     if (isExist.length > 0) visitedProducts.splice(isExist[0], 1);

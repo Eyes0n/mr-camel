@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { render, screen } from "@testing-library/react";
-import ProductsContext, { AllProductsContext } from "./ProductsContext";
+import ProductsContext, { AllProductsContext } from "context/ProductsContext";
 
 describe("Products Context ", () => {
   test("renders component corretly ", () => {

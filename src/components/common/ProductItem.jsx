@@ -27,7 +27,7 @@ class ProductItem extends Component {
 
     const titleName = title.length > 25 ? title.substring(0, 25).concat("...") : title;
     return (
-      <Wrapper>
+      <Wrapper data-testid="item">
         <div className="item-wrapper" onClick={() => this.handleItemClick(disLike)}>
           <div className="item-title">
             <h4>{titleName}</h4>

@@ -24,7 +24,7 @@ class ProductList extends Component {
         {(allProducts) => (
           <Wrapper>
             <h3>이런 매물은 어때요?🤗</h3>
-            <div className="product-list">
+            <div className="product-list" data-testid="itemList">
               {allProducts?.map((product, i) => (
                 <ProductItem
                   key={`product${i}`}

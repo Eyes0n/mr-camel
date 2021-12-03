@@ -43,5 +43,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://optimistic-leakey-16a8a8.netlify.app"
+  "homepage": "https://optimistic-leakey-16a8a8.netlify.app",
+  "devDependencies": {
+    "jest-styled-components": "^7.0.8"
+  }
 }
